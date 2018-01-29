@@ -1,4 +1,4 @@
-#!/usr/bin/python
+#!/usr/python
 # -*- coding: utf-8 -*-
 
 # Modules
@@ -17,16 +17,7 @@ HEIGHT = 480
 
 # Functions
 # ---------------------------------------------------------------------
-def load_image(filename, transparent=False):
-    try:
-        image = pygame.image.load(filename)
-    except pygame.error, message:
-        raise SystemExit, message
-    image = image.convert()
-    if transparent:
-        color = image.get_at((0, 0))
-        image.set_colorkey(color, RLEACCEL)
-    return image
+
 # ---------------------------------------------------------------------
 
 def main():
@@ -42,8 +33,6 @@ def main():
 
         master.blit(bg_image, (0, 0))
         pygame.display.update()
-
-    return 0
 
 
 if __name__ == '__main__':
