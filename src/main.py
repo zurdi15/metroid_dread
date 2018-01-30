@@ -10,6 +10,8 @@ from pygame.locals import *
 PYTROID_DIR = os.path.dirname(os.path.realpath(__file__)) + '/'
 sys.path.append(PYTROID_DIR + 'handler')
 from image_loader import load_image
+from director import Director
+from scene_start import SceneStart
 sys.path.append(PYTROID_DIR + 'character')
 from samus import Samus
 # ---------------------------------------------------------------------
@@ -23,10 +25,10 @@ FPS = 60
 # ---------------------------------------------------------------------
 
 def main():
-    dir = director.Director()
-    scene = scene_home.SceneHome(dir)
-    dir.change_scene(scene)
-    dir.loop()
+    director = Director()
+    scene = SceneStart(director)
+    director.change_scene(scene)
+    director.loop()
 
     # Init
     # ---------------------------------------------------------------------

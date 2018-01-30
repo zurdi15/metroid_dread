@@ -10,7 +10,7 @@ import scene
 
 # Clases
 # ---------------------------------------------------------------------
-class SceneHome(scene.Scene):
+class SceneStart(scene.Scene):
     """Escena inicial del juego, esta es la primera que se carga cuando inicia"""
 
     def __init__(self, director):
