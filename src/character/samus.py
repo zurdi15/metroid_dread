@@ -5,7 +5,8 @@
 # ---------------------------------------------------------------------
 import pygame
 from pygame.locals import *
-from image_loader import load_image
+import graphics
+import config
 # ---------------------------------------------------------------------
 
 class Samus(pygame.sprite.Sprite):
@@ -14,8 +15,7 @@ class Samus(pygame.sprite.Sprite):
 
         self.SCREEN_WIDHT = SCREEN_WIDHT
         self.SCREEN_HEIGHT = SCREEN_HEIGHT
-        image_path = "resources/images/characters/samus_front.png"
-        self.sprite = load_image(image_path, True)
+        self.sprite = graphics.load_image(config.samus_front, True)
         self.sprite_collide = self.sprite.get_rect()
         self.WIDTH = self.sprite_collide[2]
         self.HEIGHT = self.sprite_collide[3]

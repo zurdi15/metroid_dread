@@ -16,7 +16,7 @@ class Scene:
         """Actualización lógica que se llama automáticamente desde el director."""
         raise NotImplemented("Tiene que implementar el método on_update.")
 
-    def on_event(self, event):
+    def on_event(self):
         """Se llama cuando llega un evento especifico al bucle."""
         raise NotImplemented("Tiene que implementar el método on_event.")
 

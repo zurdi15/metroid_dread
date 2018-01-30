@@ -4,6 +4,7 @@
 # Modules
 # ---------------------------------------------------------------------
 import pygame
+from pygame.locals import *
 import config
 # ---------------------------------------------------------------------
 
@@ -21,8 +22,9 @@ class Director:
         self.screen = pygame.display.set_mode((config.width, config.height))
         pygame.display.set_caption(config.name)
         self.scene = None
-        self.quit_flag = False
         self.clock = pygame.time.Clock()
+        self.music_flag = True
+        self.quit_flag = False
 
     def loop(self):
         """Pone en funcionamiento el juego."""
@@ -30,13 +32,10 @@ class Director:
         while not self.quit_flag:
             self.time = self.clock.tick(60)
 
-            # Eventos de Salida
-            for event in pygame.event.get():
+            # Eventos
+            for event in pygame.event.get(QUIT):
                 if event.type == pygame.QUIT:
                     self.quit()
-                if event.type == pygame.KEYDOWN:
-                    if event.key == pygame.K_ESCAPE:
-                        self.quit()
 
             # detecta eventos
             self.scene.on_event()
