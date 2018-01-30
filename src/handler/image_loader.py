@@ -1,7 +1,10 @@
 #!/bin/python
 
+# Modules
+# ---------------------------------------------------------------------
 import pygame
 from pygame.locals import *
+# ---------------------------------------------------------------------
 
 def load_image(filename, transparent=False):
     try:
