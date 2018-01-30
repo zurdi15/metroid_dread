@@ -1,4 +1,4 @@
-#!/usr/python
+#!/usr/bin/python
 # -*- coding: utf-8 -*-
 
 # Modules
@@ -18,8 +18,8 @@ class Director:
     derivados de Scene."""
 
     def __init__(self):
-        self.screen = pygame.display.set_mode((640, 480))
-        pygame.display.set_caption("Nombre Proyecto")
+        self.screen = pygame.display.set_mode((config.width, config.height))
+        pygame.display.set_caption(config.name)
         self.scene = None
         self.quit_flag = False
         self.clock = pygame.time.Clock()
@@ -28,7 +28,7 @@ class Director:
         """Pone en funcionamiento el juego."""
 
         while not self.quit_flag:
-            time = self.clock.tick(60)
+            self.time = self.clock.tick(60)
 
             # Eventos de Salida
             for event in pygame.event.get():

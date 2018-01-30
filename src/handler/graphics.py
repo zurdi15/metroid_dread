@@ -1,4 +1,4 @@
-#!/bin/python
+#!/usr/bin/python
 
 # Modules
 # ---------------------------------------------------------------------
@@ -16,3 +16,11 @@ def load_image(filename, transparent=False):
         color = image.get_at((0, 0))
         image.set_colorkey(color, RLEACCEL)
     return image
+
+def load_text(text, posx, posy, color=(255, 255, 255)):
+    source = pygame.font.Font("resources/fonts/DroidSans.ttf", 45)
+    score_image = pygame.font.Font.render(source, text, 1, color)
+    score_image_rect = score_image.get_rect()
+    score_image_rect.centerx = posx
+    score_image_rect.centery = posy
+    return score_image, score_image_rect

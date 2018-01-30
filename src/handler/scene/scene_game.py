@@ -5,12 +5,10 @@
 # Modules
 # ---------------------------------------------------------------------
 import scene
+import config
 # ---------------------------------------------------------------------
 
-
-# Clases
-# ---------------------------------------------------------------------
-class SceneStart(scene.Scene):
+class SceneGame(scene.Scene):
     """Escena inicial del juego, esta es la primera que se carga cuando inicia"""
 
     def __init__(self, director):
@@ -24,17 +22,3 @@ class SceneStart(scene.Scene):
 
     def on_draw(self, screen):
         pass
-# ---------------------------------------------------------------------
-
-# Funciones
-# ---------------------------------------------------------------------
-
-
-# ---------------------------------------------------------------------
-
-def main():
-    pass
-
-
-if __name__ == '__main__':
-    main()
