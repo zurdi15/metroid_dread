@@ -10,12 +10,11 @@ class Pymus(pygame.sprite.Sprite):
         pygame.sprite.Sprite.__init__(self)
         self.SCREEN_WIDHT = SCREEN_WIDHT
         self.SCREEN_HEIGHT = SCREEN_HEIGHT
-        self.WIDHT = 5
-        self.HEIGHT = 15
-        self.sprite = load_image("resources/images/pymus_real.png", True)
+        image_path = "resources/images/pymus_real.png"
+        self.sprite = load_image(image_path, True)
         self.sprite_collide = self.sprite.get_rect()
         self.sprite_collide.centerx = 0
-        self.sprite_collide.centery = SCREEN_HEIGHT-self.HEIGHT
+        self.sprite_collide.centery = 0
         self.speed = [0.5, 0.2]
 
 

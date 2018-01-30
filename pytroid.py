@@ -15,9 +15,15 @@ from pymus import Pymus
 
 os.environ['SDL_VIDEO_CENTERED'] = '1'
 
+platform = raw_input()
+
 # Const
-WIDTH = 800
-HEIGHT = 600
+if platform == 'pc':
+    WIDTH = 800
+    HEIGHT = 600
+elif platform == '3ds':
+    WIDTH = 400
+    HEIGHT = 240
 FPS = 60
 # Classes
 # ---------------------------------------------------------------------
@@ -32,7 +38,9 @@ FPS = 60
 def main():
     pygame.display.set_caption("Pytroid")
     master = pygame.display.set_mode((WIDTH, HEIGHT))
-    bg_image = load_image('resources/images/background.gif')
+    bg_image = load_image('resources/images/Logo Metroid Prime.png')
+    bg_image = pygame.transform.scale(bg_image, (WIDTH, HEIGHT))
+
     pymus = Pymus(WIDTH, HEIGHT)
 
     clock = pygame.time.Clock()
