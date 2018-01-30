@@ -23,14 +23,14 @@ class Director:
         pygame.display.set_caption(config.name)
         self.scene = None
         self.clock = pygame.time.Clock()
-        self.music_flag = True
+        self.music_flag = False
         self.quit_flag = False
 
     def loop(self):
         """Pone en funcionamiento el juego."""
 
         while not self.quit_flag:
-            self.time = self.clock.tick(60)
+            self.time = self.clock.tick(config.fps)
 
             # Eventos
             for event in pygame.event.get(QUIT):

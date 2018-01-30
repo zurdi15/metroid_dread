@@ -17,6 +17,7 @@ name = 'Metroid: Dread'
 device = 1
 width = 800/device
 height = 480/device
+fps = 20
 os.environ['SDL_VIDEO_CENTERED'] = '1'
 
 # Directories
@@ -31,3 +32,7 @@ samus_front = characters+'/samus_front.png'
 
 audio = 'resources/audio'
 main_menu_audio = audio+'/music_menu.ogg'
+
+# TEST
+test_bg = 'resources/test/test_bg.png'
+test_sprite = 'resources/test/test_sprites_kate.png'

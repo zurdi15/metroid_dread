@@ -17,7 +17,7 @@ class SceneGame(scene.Scene):
     def __init__(self, director):
         """Escena del juego"""
         scene.Scene.__init__(self, director)
-        self.samus = Samus(config.width, config.height)
+        self.samus = Samus()
         self.bg = graphics.load_image(config.bg_start_game)
 
     def on_update(self):
