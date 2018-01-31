@@ -25,9 +25,10 @@ class Kate(pygame.sprite.Sprite):
         self.right_states = {0: (0, 152, 52, 76), 1: (52, 152, 52, 76), 2: (156, 152, 52, 76)}
         self.up_states = {0: (0, 228, 52, 76), 1: (52, 228, 52, 76), 2: (156, 228, 52, 76)}
         self.down_states = {0: (0, 0, 52, 76), 1: (52, 0, 52, 76), 2: (156, 0, 52, 76)}
+        self.updated = pygame.time.get_ticks()
         self.WIDTH = self.rect[2]
         self.HEIGHT = self.rect[3]
-        self.speed = [0.3/config.device, 0.3/config.device]
+        self.speed = [2/config.device, 2/config.device]
 
 
     def get_frame(self, frame_set):
@@ -76,12 +77,14 @@ class Kate(pygame.sprite.Sprite):
 
 
     def handle_event(self, time):
-        keys = pygame.key.get_pressed()
-        if keys[K_LEFT]:
-            self.update('left', time)
-        if keys[K_RIGHT]:
-            self.update('right', time)
-        if keys[K_UP]:
-            self.update('up', time)
-        if keys[K_DOWN]:
-            self.update('down', time)
+        if self.updated + 50 <= pygame.time.get_ticks():
+            keys = pygame.key.get_pressed()
+            if keys[K_LEFT]:
+                self.update('left', time)
+            if keys[K_RIGHT]:
+                self.update('right', time)
+            if keys[K_UP]:
+                self.update('up', time)
+            if keys[K_DOWN]:
+                self.update('down', time)
+            self.updated = pygame.time.get_ticks()

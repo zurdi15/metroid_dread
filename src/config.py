@@ -17,7 +17,7 @@ name = 'Metroid: Dread'
 device = 1
 width = 800/device
 height = 480/device
-fps = 20
+fps = 120
 os.environ['SDL_VIDEO_CENTERED'] = '1'
 
 # Directories

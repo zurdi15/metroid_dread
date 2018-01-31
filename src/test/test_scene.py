@@ -5,10 +5,8 @@
 # Modules
 # ---------------------------------------------------------------------
 import pygame
-from pygame.locals import *
 import scene
 import config
-import graphics
 from kate import Kate
 # ---------------------------------------------------------------------
 

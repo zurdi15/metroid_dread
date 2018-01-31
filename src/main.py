@@ -13,6 +13,7 @@ import pygame
 from director import Director
 from test_scene import SceneTest
 from scene_game import SceneGame
+from scene_start import SceneStart
 import config
 # ---------------------------------------------------------------------
 
