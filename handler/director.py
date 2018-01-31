@@ -1,11 +1,12 @@
 #!/usr/bin/python
 # -*- coding: utf-8 -*-
 
+
 # Modules
 # ---------------------------------------------------------------------
 import pygame
 from pygame.locals import *
-import config
+from handler import config
 # ---------------------------------------------------------------------
 
 
@@ -19,11 +20,11 @@ class Director:
     derivados de Scene."""
 
     def __init__(self):
-        self.screen = pygame.display.set_mode((config.width, config.height))
+        self.screen = pygame.display.set_mode((config.screen_width, config.screen_height))
         pygame.display.set_caption(config.name)
         self.scene = None
         self.clock = pygame.time.Clock()
-        self.music_flag = False
+        self.music_flag = True
         self.quit_flag = False
         self.time = 0
 
@@ -34,9 +35,8 @@ class Director:
             self.time = self.clock.tick(config.fps)
 
             # Eventos
-            for event in pygame.event.get():
-                if event.type == QUIT:
-                    self.quit()
+            for event in pygame.event.get(QUIT):
+                self.quit()
 
             # detecta eventos
             self.scene.on_event()

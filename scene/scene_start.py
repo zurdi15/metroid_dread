@@ -6,25 +6,30 @@
 # ---------------------------------------------------------------------
 import pygame
 from pygame.locals import *
+from handler import config
 import scene
-import config
-import graphics
-from samus import Samus
+from handler import graphics
+from scene_main_menu import SceneMainMenu
 # ---------------------------------------------------------------------
 
-class SceneGame(scene.Scene):
+
+class SceneStart(scene.Scene):
+    """Escena inicial del juego, esta es la primera que se carga cuando inicia"""
 
     def __init__(self, director):
-        """Escena del juego"""
         scene.Scene.__init__(self, director)
-        self.samus = Samus()
         self.bg = graphics.load_image(config.bg_start_game)
+        self.ENTER = False
 
     def on_update(self):
-        pass
+        if self.ENTER:
+            scene = SceneMainMenu(self.director)
+            self.director.change_scene(scene)
 
     def on_event(self):
         for event in pygame.event.get(KEYDOWN):
+            if event.key == pygame.K_RETURN:
+                self.ENTER = True
             if event.key == pygame.K_m:
                 if self.director.music_flag:
                     pygame.mixer.music.pause()
@@ -32,9 +37,6 @@ class SceneGame(scene.Scene):
                 else:
                     pygame.mixer.music.unpause()
                     self.director.music_flag = True
-        keys = pygame.key.get_pressed()
-        self.samus.move(self.director.time, keys)
 
     def on_draw(self, screen):
-        screen.fill([0, 0, 0])
-        screen.blit(self.samus.sprite, self.samus.sprite_collide)
+        screen.blit(self.bg, (0, 0))

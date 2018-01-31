@@ -6,15 +6,13 @@
 # ---------------------------------------------------------------------
 import pygame
 from pygame.locals import *
-import config
+from handler import config
 import scene
-import graphics
+from handler import graphics
 from scene_game import SceneGame
 # ---------------------------------------------------------------------
 
 
-# Clases
-# ---------------------------------------------------------------------
 class SceneMainMenu(scene.Scene):
     """Escena del menu principal del juego"""
 
@@ -42,4 +40,3 @@ class SceneMainMenu(scene.Scene):
 
     def on_draw(self, screen):
         screen.blit(self.bg, (0, 0))
-# ---------------------------------------------------------------------

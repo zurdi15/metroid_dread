@@ -6,7 +6,9 @@
 import pygame
 from pygame.locals import *
 import graphics
-import config
+from handler import config
+
+
 # ---------------------------------------------------------------------
 
 class Kate(pygame.sprite.Sprite):
@@ -17,11 +19,11 @@ class Kate(pygame.sprite.Sprite):
         self.sheet = graphics.load_image(config.test_sprites_kate, True)
 
         # Definimos medidas
-        self.WIDTH = 52
-        self.HEIGHT = 76
+        self.width = 52
+        self.height = 76
 
         # Definimos el tamaño de cada clip del sheet
-        self.sheet.set_clip(pygame.Rect(0, 0, self.WIDTH, self.HEIGHT))
+        self.sheet.set_clip(pygame.Rect(0, 0, self.width, self.height))
 
         # Recogemos la imagen inicial del sheet
         self.image = self.sheet.subsurface(self.sheet.get_clip())
@@ -42,8 +44,8 @@ class Kate(pygame.sprite.Sprite):
         self.updated = pygame.time.get_ticks()
 
         # Definimos la velocidad de movimiento y salto
-        self.speed = [1/config.device, 1/config.device]
-        self.jump_force = 5
+        self.speed = [1 / config.device, 1 / config.device]
+        self.jump_force = 10
 
         # Flag para saber si esta saltando
         self.jumping = False
@@ -64,7 +66,7 @@ class Kate(pygame.sprite.Sprite):
             self.sheet.set_clip(pygame.Rect(clipped_rect))
 
 
-    def update(self, direction, time):
+    def move(self, direction, time):
         # Si es una animacion, pasamos el diccionario con las coordenadas de la animacion
         if direction == 'left':
             self.clip(self.left_states)
@@ -73,7 +75,7 @@ class Kate(pygame.sprite.Sprite):
                 self.rect.x -= self.speed[0] * time
         if direction == 'right':
             self.clip(self.right_states)
-            if self.rect.x <= config.width-self.WIDTH:
+            if self.rect.x <= config.screen_width-self.width:
                 self.rect.x += self.speed[0] * time
         if direction == 'up':
             self.clip(self.up_states)
@@ -81,7 +83,7 @@ class Kate(pygame.sprite.Sprite):
                 self.rect.y -= self.speed[1] * time
         if direction == 'down':
             self.clip(self.down_states)
-            if self.rect.y <= config.height-self.HEIGHT:
+            if self.rect.y <= config.screen_height-self.height:
                 self.rect.y += self.speed[1] * time
 
         # Si no es una animacion, pasamos el primer sprite del diccionario con las coordenadas de la animacion
@@ -98,9 +100,7 @@ class Kate(pygame.sprite.Sprite):
 
 
     def calculate_gravity(self):
-        if self.rect.y <= config.height:
-            print 'bajando'
-            print self.rect.y
+        if self.rect.y <= config.screen_height:
             self.rect.y = self.rect.y + config.gravity
 
 
@@ -109,34 +109,35 @@ class Kate(pygame.sprite.Sprite):
 
 
     # Manejador de eventos
-    def handle_event(self, time):
+    def update(self, time):
         self.calculate_gravity()
-        if self.rect.y + self.HEIGHT > config.height:
-            self.rect.y = config.height - self.HEIGHT
+        if self.rect.y + self.height > config.screen_height:
+            self.rect.y = config.screen_height - self.height
             self.jumping = False
+
         # Eventos continuos
         if self.updated + config.fps <= pygame.time.get_ticks():
             keys = pygame.key.get_pressed()
             if keys[K_LEFT]:
-                self.update('left', time)
+                self.move('left', time)
             if keys[K_RIGHT]:
-                self.update('right', time)
+                self.move('right', time)
             if keys[K_UP]:
-                self.update('up', time)
+                self.move('up', time)
             if keys[K_DOWN]:
-                self.update('down', time)
+                self.move('down', time)
             self.updated = pygame.time.get_ticks()
 
         # Eventos unicos
         for event in pygame.event.get(KEYUP):
             if event.key == pygame.K_LEFT:
-                self.update('stand_left', time)
+                self.move('stand_left', time)
             if event.key == pygame.K_RIGHT:
-                self.update('stand_right', time)
+                self.move('stand_right', time)
             if event.key == pygame.K_UP:
-                self.update('stand_up', time)
+                self.move('stand_up', time)
             if event.key == pygame.K_DOWN:
-                self.update('stand_down', time)
+                self.move('stand_down', time)
         for event in pygame.event.get(KEYDOWN):
             if event.key == pygame.K_SPACE:
                 if not self.jumping:
