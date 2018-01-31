@@ -17,8 +17,11 @@ name = 'Metroid: Dread'
 device = 1
 width = 800/device
 height = 480/device
-fps = 120
+fps = 60
 os.environ['SDL_VIDEO_CENTERED'] = '1'
+
+# Parameters
+gravity = 0.35
 
 # Directories
 start_game = 'resources/images/start_game'
@@ -29,10 +32,11 @@ bg_main_menu = menu+'/bg_main_menu.png' \
                     ''
 characters = 'resources/images/characters'
 samus_front = characters+'/samus_front.png'
+samus_zero_sheet = characters+'/zero_suit_sheet.png'
 
 audio = 'resources/audio'
 main_menu_audio = audio+'/music_menu.ogg'
 
 # TEST
 test_bg = 'resources/test/test_bg.png'
-test_sprite = 'resources/test/test_sprites_kate.png'
+test_sprites_kate = 'resources/test/test_sprites_kate.png'

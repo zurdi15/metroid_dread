@@ -25,6 +25,7 @@ class Director:
         self.clock = pygame.time.Clock()
         self.music_flag = False
         self.quit_flag = False
+        self.time = 0
 
     def loop(self):
         """Pone en funcionamiento el juego."""
@@ -33,8 +34,8 @@ class Director:
             self.time = self.clock.tick(config.fps)
 
             # Eventos
-            for event in pygame.event.get(QUIT):
-                if event.type == pygame.QUIT:
+            for event in pygame.event.get():
+                if event.type == QUIT:
                     self.quit()
 
             # detecta eventos
@@ -45,6 +46,7 @@ class Director:
 
             # dibuja la pantalla
             self.scene.on_draw(self.screen)
+
             pygame.display.update()
 
     def change_scene(self, scene):

@@ -7,7 +7,9 @@
 import pygame
 import scene
 import config
+from graphics import load_image
 from kate import Kate
+from samus import Samus
 # ---------------------------------------------------------------------
 
 class SceneTest(scene.Scene):
@@ -15,14 +17,15 @@ class SceneTest(scene.Scene):
     def __init__(self, director):
         """Escena para testing"""
         scene.Scene.__init__(self, director)
-        self.kate = Kate(config.width, config.height)
+        self.character_test = Samus()
+        self.bg = load_image(config.test_bg)
 
     def on_update(self):
         pass
 
     def on_event(self):
-        self.kate.handle_event(self.director.time)
+        self.character_test.handle_event(self.director.time)
 
     def on_draw(self, screen):
-        screen.fill(pygame.Color('gray'))
-        screen.blit(self.kate.image, self.kate.rect)
+        screen.blit(self.bg, (0, 0))
+        screen.blit(self.character_test.image, self.character_test.rect)
