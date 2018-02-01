@@ -23,6 +23,7 @@ class Director:
         self.screen = pygame.display.set_mode((config.screen_width, config.screen_height))
         pygame.display.set_caption(config.name)
         self.scene = None
+        self.scene_dict = {}
         self.clock = pygame.time.Clock()
         self.music_flag = True
         self.quit_flag = False
@@ -51,6 +52,7 @@ class Director:
 
     def change_scene(self, scene):
         """Altera la escena actual."""
+        self.scene_dict[scene.name]=scene
         self.scene = scene
 
     def quit(self):

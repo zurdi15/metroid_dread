@@ -6,19 +6,24 @@
 # ---------------------------------------------------------------------
 import pygame
 from pygame.locals import *
-import scene
+from scene import Scene
 from character import Samus
 # ---------------------------------------------------------------------
 
 
-class SceneGame(scene.Scene):
+class SceneGame(Scene):
 
     def __init__(self, director):
         """Escena del juego"""
-        scene.Scene.__init__(self, director)
+        Scene.__init__(self, director)
+        self.name = 'scene_game'
+        self.MAIN_MENU = False
         self.samus = Samus(400, 100)
 
     def on_update(self):
+        if self.MAIN_MENU:
+            self.MAIN_MENU = False
+            self.director.change_scene(self.director.scene_dict['scene_main_menu'])
         self.samus.update()
 
     def on_event(self):
@@ -32,6 +37,8 @@ class SceneGame(scene.Scene):
                 elif event.key == K_LEFT:
                     self.samus.move('stand_left')
             elif event.type == KEYDOWN:
+                if event.key == K_BACKSPACE:
+                    self.MAIN_MENU = True
                 if event.key == K_SPACE:
                     self.samus.jump()
                 if event.key == K_m:

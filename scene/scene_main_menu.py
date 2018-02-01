@@ -7,36 +7,45 @@
 import pygame
 from pygame.locals import *
 from handler import config
-import scene
 from handler import graphics
+from scene import Scene
 from scene_game import SceneGame
 # ---------------------------------------------------------------------
 
 
-class SceneMainMenu(scene.Scene):
+class SceneMainMenu(Scene):
     """Escena del menu principal del juego"""
 
     def __init__(self, director):
-        scene.Scene.__init__(self, director)
+        Scene.__init__(self, director)
+        self.name = 'scene_main_menu'
         self.bg = graphics.load_image(config.bg_main_menu)
-        self.ENTER = False
+        self.START = False
+        self.GAME = False
 
     def on_update(self):
-        if self.ENTER:
+        if self.GAME:
+            self.GAME = False
             scene = SceneGame(self.director)
             self.director.change_scene(scene)
+        if self.START:
+            self.START = False
+            self.director.change_scene(self.director.scene_dict['scene_start'])
 
     def on_event(self):
-        for event in pygame.event.get(KEYDOWN):
-            if event.key == pygame.K_RETURN:
-                self.ENTER = True
-            if event.key == pygame.K_m:
-                if self.director.music_flag:
-                    pygame.mixer.music.pause()
-                    self.director.music_flag = False
-                else:
-                    pygame.mixer.music.unpause()
-                    self.director.music_flag = True
+        for event in pygame.event.get():
+            if event.type == KEYDOWN:
+                if event.key == K_BACKSPACE:
+                    self.START = True
+                if event.key == pygame.K_RETURN:
+                    self.GAME = True
+                if event.key == pygame.K_m:
+                    if self.director.music_flag:
+                        pygame.mixer.music.pause()
+                        self.director.music_flag = False
+                    else:
+                        pygame.mixer.music.unpause()
+                        self.director.music_flag = True
 
     def on_draw(self, screen):
         screen.blit(self.bg, (0, 0))

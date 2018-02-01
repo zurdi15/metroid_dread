@@ -6,7 +6,7 @@
 # ---------------------------------------------------------------------
 import pygame
 from handler import Director
-from scene import *
+from scene import SceneStart, SceneMainMenu,SceneGame
 from handler import config
 # ---------------------------------------------------------------------
 
@@ -22,9 +22,9 @@ def music_init():
 
 
 def main():
-    #music_init()
+    music_init()
     director = Director()
-    scene = SceneGame(director)
+    scene = SceneStart(director)
     director.change_scene(scene)
     director.loop()
 
