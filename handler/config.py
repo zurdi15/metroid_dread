@@ -26,6 +26,8 @@ screen_height = 480 / device
 fps = 60
 os.environ['SDL_VIDEO_CENTERED'] = '1'
 
+samus_transparent = (153, 179, 193)
+
 # Parameters
 gravity = 0.7
 
@@ -40,10 +42,7 @@ bg_main_menu = menu+'/bg_main_menu.png' \
 
 # Characters                    ''
 characters = 'resources/images/character'
-samus_front = characters+'/samus_front.png'
-samus_move_sheet = characters+'/samus_move_sheet.png'
-samus_move_sheet_left = characters+'/samus_move_sheet_left.png'
-samus_zero_move_sheet = characters+'/zero_suit_move_sheet.png'
+samus_zero_sheet = characters+'/zero_suit_sheet.png'
 
 # Audio
 audio = 'resources/audio'
