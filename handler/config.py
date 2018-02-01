@@ -60,6 +60,10 @@ shot = ammo+'/shot.png'
 audio = 'resources/audio'
 main_menu_audio = audio+'/music_menu.ogg'
 
+# Video
+video = 'resources/video'
+intro_movie = video+'/intro_movie.mepg'
+
 # Fonts
 fonts = 'resources/fonts'
 droid_sans = fonts+'/droid_sans.ttf'

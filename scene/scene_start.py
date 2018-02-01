@@ -49,13 +49,15 @@ class SceneStart(Scene):
     def on_draw(self, screen):
         screen.blit(self.bg, (0, 0))
 
-    def intro_init(self):
-        movie = pygame.movie.Movie('MELT.MPG')
+    @staticmethod
+    def intro_init():
+        movie = pygame.movie.Movie(config.intro_movie)
         movie_screen = pygame.Surface(movie.get_size()).convert()
         movie.set_display(movie_screen)
         movie.play()
 
-    def music_init(self):
+    @staticmethod
+    def music_init():
         pygame.mixer.pre_init(44100, -16, 2, 2048)
         pygame.mixer.init()
         pygame.mixer.music.load(config.main_menu_audio)
