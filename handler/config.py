@@ -20,16 +20,15 @@ import os
 name = 'Metroid: Dread'
 
 # Resolution
-device = 1
-screen_width = 800 / device
-screen_height = 480 / device
+screen_width = 800
+screen_height = 480
 fps = 60
 os.environ['SDL_VIDEO_CENTERED'] = '1'
 
 samus_transparent = (153, 179, 193)
 
 # Parameters
-gravity = 0.7 / device
+gravity = 0.7
 
 # Colors
 black = (0,0,0)

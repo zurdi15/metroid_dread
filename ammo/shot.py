@@ -17,7 +17,7 @@ class Shot(pygame.sprite.Sprite):
         self.posx = posx
         self.posy = posy
         self.direction = direction
-        self.speed = 20 / config.device
+        self.speed = 20
 
 
     def set_pos(self, posx, posy):

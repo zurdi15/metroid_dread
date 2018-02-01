@@ -6,6 +6,7 @@
 # ---------------------------------------------------------------------
 import pygame
 from pygame.locals import *
+from pygame import movie
 from handler import config
 from scene import Scene
 from handler import graphics
