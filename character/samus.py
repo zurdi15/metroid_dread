@@ -16,10 +16,6 @@ class Samus(Character):
     def __init__(self, px, py):
         Character.__init__(self)
 
-        # self.image = load_image(config.samus_front, True)
-        # self.width = self.image.get_width()
-        # self.height = self.image.get_height()
-
         # Cargamos el sheet
         self.sheet = load_image(config.samus_zero_move_sheet, True)
 
@@ -40,13 +36,13 @@ class Samus(Character):
         self.frame = 0
 
         # Definimos cada estado con sus coordenadas
-        self.right_states = {0: (0, 0, 93, 111),
-                             1: (93, 0, 93, 111),
-                             2: (93*2, 0, 93, 111),
+        self.right_states = {6: (0, 0, 93, 111),
+                             5: (93, 0, 93, 111),
+                             4: (93*2, 0, 93, 111),
                              3: (93*3, 0, 93, 111),
-                             4: (93*4, 0, 93, 111),
-                             5: (93*5, 0, 93, 111),
-                             6: (93*6, 0, 93, 111)}
+                             2: (93*4, 0, 93, 111),
+                             1: (93*5, 0, 93, 111),
+                             0: (93*6, 0, 93, 111)}
 
         self.left_states = {0: (0, 0, 93, 111),
                              1: (93, 0, 93, 111),
@@ -86,25 +82,28 @@ class Samus(Character):
 
 
     def move(self, direction):
-        if direction == 'left':
-            self.clip(self.left_states)
-            if self.posx >= 0:
-                self.dx = -self.speed[0]
-            else:
-                self.dx = 0
-                self.posx = 0
-        elif direction == 'right':
-            self.clip(self.right_states)
+        if direction == 'right':
+            if not self.jumping:
+                self.clip(self.right_states)
             if self.posx <= config.screen_width-self.width:
                 self.dx = self.speed[0]
             else:
                 self.dx = 0
                 self.posx = config.screen_width - self.width
+        elif direction == 'left':
+            if not self.jumping:
+                self.clip(self.left_states)
+            if self.posx >= 0:
+                self.dx = -self.speed[0]
+            else:
+                self.dx = 0
+                self.posx = 0
+
+        elif direction == 'stand_right':
+            self.clip(self.right_states[6])
+            self.dx = 0
         elif direction == 'stand_left':
             self.clip(self.left_states[0])
-            self.dx = 0
-        elif direction == 'stand_right':
-            self.clip(self.right_states[0])
             self.dx = 0
 
         self.image = self.sheet.subsurface(self.sheet.get_clip())
