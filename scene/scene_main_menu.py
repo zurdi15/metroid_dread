@@ -47,6 +47,7 @@ class SceneMainMenu(Scene):
         self.menu_element_3_selected = False
         # Element selected
         self.menu_element_selected = graphics.load_image(config.element_main_menu_selected, True)
+        self.menu_element_selected.set_alpha(self.element_opacity_selected)
 
     def on_update(self):
         pygame.mouse.set_visible(True)
@@ -84,33 +85,34 @@ class SceneMainMenu(Scene):
 
     def on_draw(self, screen):
         screen.blit(self.bg, (0, 0))
-        screen.blit(self.menu_element_1, self.menu_element_1_rect)
-        screen.blit(self.menu_element_2, self.menu_element_2_rect)
-        screen.blit(self.menu_element_3, self.menu_element_3_rect)
 
+        if self.menu_element_1_selected:
+            screen.blit(self.menu_element_selected, self.menu_element_1_rect)
+        else:
+            screen.blit(self.menu_element_1, self.menu_element_1_rect)
+
+        if self.menu_element_2_selected:
+            screen.blit(self.menu_element_selected, self.menu_element_2_rect)
+        else:
+            screen.blit(self.menu_element_2, self.menu_element_2_rect)
+
+        if self.menu_element_3_selected:
+            screen.blit(self.menu_element_selected, self.menu_element_3_rect)
+        else:
+            screen.blit(self.menu_element_3, self.menu_element_3_rect)
 
     def check_menu(self):
         if self.menu_element_1_rect.collidepoint(pygame.mouse.get_pos()):
-            self.menu_element_1 = graphics.load_image(config.element_main_menu_selected, True)
-            self.menu_element_1.set_alpha(self.element_opacity_selected)
             self.menu_element_1_selected = True
         else:
-            self.menu_element_1 = graphics.load_image(config.element_main_menu, True)
-            self.menu_element_1.set_alpha(self.element_opacity)
             self.menu_element_1_selected = False
 
         if self.menu_element_2_rect.collidepoint(pygame.mouse.get_pos()):
-            self.menu_element_2 = graphics.load_image(config.element_main_menu_selected, True)
-            self.menu_element_2.set_alpha(self.element_opacity_selected)
+            self.menu_element_2_selected = True
         else:
-            self.menu_element_2 = graphics.load_image(config.element_main_menu, True)
-            self.menu_element_2.set_alpha(self.element_opacity)
             self.menu_element_2_selected = False
 
         if self.menu_element_3_rect.collidepoint(pygame.mouse.get_pos()):
-            self.menu_element_3 = graphics.load_image(config.element_main_menu_selected, True)
-            self.menu_element_3.set_alpha(self.element_opacity_selected)
+            self.menu_element_3_selected = True
         else:
-            self.menu_element_3 = graphics.load_image(config.element_main_menu, True)
-            self.menu_element_3.set_alpha(self.element_opacity)
             self.menu_element_3_selected = False
