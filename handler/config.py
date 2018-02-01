@@ -42,8 +42,7 @@ bg_main_menu = menu+'/bg_main_menu.png' \
 
 # Characters                    ''
 characters = 'resources/images/character'
-zero_suit_stand_right_sheet = characters+'/zero_suit_stand_right_sheet.png'
-zero_suit_stand_left_sheet = characters+'/zero_suit_stand_left_sheet.png'
+zero_suit_stand_sheet = characters+'/zero_suit_stand_sheet.png'
 zero_suit_move_right_sheet = characters+'/zero_suit_move_right_sheet.png'
 zero_suit_move_left_sheet = characters+'/zero_suit_move_left_sheet.png'
 

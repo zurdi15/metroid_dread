@@ -17,10 +17,10 @@ class Samus(Character):
         Character.__init__(self)
 
         # Cargamos el sheet
-        self.sheet = load_image(config.zero_suit_stand_right_sheet, True)
+        self.sheet = load_image(config.zero_suit_stand_sheet, True)
 
         # Definimos medidas
-        self.width_stand = 81
+        self.width_stand = 69
         self.height_stand = 108
         self.width_move = 105
         self.height_move = 118
@@ -38,29 +38,8 @@ class Samus(Character):
         self.frame = 0
 
         # Definimos cada estado con sus coordenadas
-        self.right_stand_states = {0: (0, 0, self.width_stand, self.height_stand),
-                                   1: (self.width_stand, 0, self.width_stand, self.height_stand),
-                                   2: (self.width_stand*2, 0, self.width_stand, self.height_stand),
-                                   3: (self.width_stand*3, 0, self.width_stand, self.height_stand),
-                                   4: (self.width_stand*4, 0, self.width_stand, self.height_stand),
-                                   5: (self.width_stand*5, 0, self.width_stand, self.height_stand),
-                                   6: (self.width_stand*6, 0, self.width_stand, self.height_stand),
-                                   7: (self.width_stand*7, 0, self.width_stand, self.height_stand),
-                                   8: (self.width_stand*8, 0, self.width_stand, self.height_stand),
-                                   9: (self.width_stand*9, 0, self.width_stand, self.height_stand),
-                                   10: (self.width_stand*10, 0, self.width_stand, self.height_stand),}
-
-        self.left_stand_states = {10: (0, 0, self.width_stand, self.height_stand),
-                                   9: (self.width_stand, 0, self.width_stand, self.height_stand),
-                                   8: (self.width_stand * 2, 0, self.width_stand, self.height_stand),
-                                   7: (self.width_stand * 3, 0, self.width_stand, self.height_stand),
-                                   6: (self.width_stand * 4, 0, self.width_stand, self.height_stand),
-                                   5: (self.width_stand * 5, 0, self.width_stand, self.height_stand),
-                                   4: (self.width_stand * 6, 0, self.width_stand, self.height_stand),
-                                   3: (self.width_stand * 7, 0, self.width_stand, self.height_stand),
-                                   2: (self.width_stand * 8, 0, self.width_stand, self.height_stand),
-                                   1: (self.width_stand * 9, 0, self.width_stand, self.height_stand),
-                                   0: (self.width_stand * 10, 0, self.width_stand, self.height_stand),}
+        self.stand_states =  {0: (self.width_stand, 0, self.width_stand, self.height_stand),
+                              1: (0, 0, self.width_stand, self.height_stand),}
 
         self.right_move_states = {0: (0, 0, self.width_move, self.height_move),
                                   1: (self.width_move, 0, self.width_move, self.height_move),
@@ -97,7 +76,6 @@ class Samus(Character):
         self.jump_force = 15
         self.jumping = True
         self.moving = False
-        self.stand = 'right'
         self.updated = pygame.time.get_ticks()
 
 
@@ -137,12 +115,12 @@ class Samus(Character):
                 self.posx = 0
 
         elif direction == 'stand_right':
-            self.moving = False
-            self.stand = 'right'
+            self.sheet = load_image(config.zero_suit_stand_sheet, True)
+            self.clip(self.stand_states[0])
             self.dx = 0
         elif direction == 'stand_left':
-            self.moving = False
-            self.stand = 'left'
+            self.sheet = load_image(config.zero_suit_stand_sheet, True)
+            self.clip(self.stand_states[1])
             self.dx = 0
 
         self.image = self.sheet.subsurface(self.sheet.get_clip())
@@ -178,14 +156,4 @@ class Samus(Character):
                 self.move('right')
             elif keys[K_LEFT]:
                 self.move('left')
-
-            if not self.moving:
-                if self.stand == 'right':
-                    self.sheet = load_image(config.zero_suit_stand_right_sheet, True)
-                    self.clip(self.right_stand_states)
-                    self.image = self.sheet.subsurface(self.sheet.get_clip())
-                elif self.stand == 'left':
-                    self.sheet = load_image(config.zero_suit_stand_left_sheet, True)
-                    self.clip(self.left_stand_states)
-                    self.image = self.sheet.subsurface(self.sheet.get_clip())
             self.updated = pygame.time.get_ticks()
