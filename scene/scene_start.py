@@ -21,6 +21,8 @@ class SceneStart(Scene):
         self.name = 'scene_start'
         self.main_menu = False
         self.bg = graphics.load_image(config.bg_start_game)
+        self.music_init()
+        self.intro_init()
 
     def on_update(self):
         if self.main_menu:
@@ -46,3 +48,15 @@ class SceneStart(Scene):
 
     def on_draw(self, screen):
         screen.blit(self.bg, (0, 0))
+
+    def intro_init(self):
+        movie = pygame.movie.Movie('MELT.MPG')
+        movie_screen = pygame.Surface(movie.get_size()).convert()
+        movie.set_display(movie_screen)
+        movie.play()
+
+    def music_init(self):
+        pygame.mixer.pre_init(44100, -16, 2, 2048)
+        pygame.mixer.init()
+        pygame.mixer.music.load(config.main_menu_audio)
+        pygame.mixer.music.play()
