@@ -31,6 +31,10 @@ samus_transparent = (153, 179, 193)
 # Parameters
 gravity = 0.7 / device
 
+# Colors
+black = (0,0,0)
+white = (255, 255, 255)
+
 # Directories
 # Start game
 start_game = 'resources/images/start_game'
@@ -38,9 +42,11 @@ bg_start_game = start_game+'/bg_start.png'
 
 # Main menu
 menu = 'resources/images/menu'
-bg_main_menu = menu+'/bg_main_menu.png' \
+bg_main_menu = menu+'/bg_main_menu.png'
+element_main_menu = menu+'/main_menu_slot_0.png'
+element_main_menu_selected = menu+'/main_menu_slot_1.png'
 
-# Characters                    ''
+# Characters
 characters = 'resources/images/character'
 zero_suit_stand_sheet = characters+'/zero_suit_stand_sheet.png'
 zero_suit_move_right_sheet = characters+'/zero_suit_move_right_sheet.png'

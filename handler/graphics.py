@@ -22,7 +22,7 @@ def load_image(filename, transparent=False):
     return image
 
 
-def load_text(text, posx, posy, color=(255, 255, 255), size=45):
+def load_text(text, posx, posy, color=config.white, size=45):
     source = pygame.font.Font(config.droid_sans, size)
     text_image = pygame.font.Font.render(source, text, 1, color)
     text_image_rect = text_image.get_rect()

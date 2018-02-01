@@ -19,20 +19,23 @@ class SceneStart(Scene):
     def __init__(self, director):
         Scene.__init__(self, director)
         self.name = 'scene_start'
-        self.MAIN_MENU = False
+        self.main_menu = False
         self.bg = graphics.load_image(config.bg_start_game)
 
     def on_update(self):
-        if self.MAIN_MENU:
-            self.MAIN_MENU = False
+        if self.main_menu:
+            self.main_menu = False
             scene = SceneMainMenu(self.director)
             self.director.change_scene(scene)
 
     def on_event(self):
         for event in pygame.event.get():
+            if event.type == MOUSEBUTTONDOWN:
+                if event.button == 1:
+                    self.main_menu = True
             if event.type == KEYDOWN:
                 if event.key == pygame.K_RETURN:
-                    self.MAIN_MENU = True
+                    self.main_menu = True
                 if event.key == pygame.K_m:
                     if self.director.music_flag:
                         pygame.mixer.music.pause()

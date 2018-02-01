@@ -162,7 +162,7 @@ class Samus(Character):
             self.gunx = self.posx
             self.guny = self.posy + 15/config.device
         elif self.direction == 'right':
-            self.gunx = self.posx + self.width_stand
+            self.gunx = self.posx + self.width_stand - 15/config.device
             self.guny = self.posy + 15/config.device
 
         if self.posy + self.rect.height > config.screen_height:

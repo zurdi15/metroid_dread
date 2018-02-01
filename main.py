@@ -23,7 +23,6 @@ def music_init():
 
 def main():
     music_init()
-    pygame.mouse.set_visible(False)
     director = Director()
     scene = SceneStart(director)
     director.change_scene(scene)
