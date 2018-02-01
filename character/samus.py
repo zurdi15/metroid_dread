@@ -17,10 +17,10 @@ class Samus(Character):
         Character.__init__(self)
 
         # Cargamos el sheet
-        self.sheet = load_image(config.samus_zero_sheet, True)
+        self.sheet = load_image(config.zero_suit_move_right_sheet, True)
 
         # Definimos medidas
-        self.width = 102
+        self.width = 105
         self.height = 118
 
         # Definimos el tamaño de cada clip del sheet
@@ -47,13 +47,17 @@ class Samus(Character):
                              8: (self.width*8, 0, self.width, self.height),
                              9: (self.width*9, 0, self.width, self.height),}
 
-        self.left_states = {0: (0, 0, 93, 111),
-                             1: (93, 0, 93, 111),
-                             2: (93*2, 0, 93, 111),
-                             3: (93*3, 0, 93, 111),
-                             4: (93*4, 0, 93, 111),
-                             5: (93*5, 0, 93, 111),
-                             6: (93*6, 0, 93, 111)}
+        self.left_states = {0: (self.width * 9, 0, self.width, self.height),
+                            1: (self.width * 8, 0, self.width, self.height),
+                            2: (self.width * 7, 0, self.width, self.height),
+                            3: (self.width * 6, 0, self.width, self.height),
+                            4: (self.width * 5, 0, self.width, self.height),
+                            5: (self.width*4, 0, self.width, self.height),
+                            6: (self.width * 3, 0, self.width, self.height),
+                            7: (self.width * 2, 0, self.width, self.height),
+                            8: (self.width, 0, self.width, self.height),
+                            9: (0, 0, self.width, self.height),}
+
 
         # Definimos el delay de la animacion
         self.updated = pygame.time.get_ticks()
@@ -86,13 +90,15 @@ class Samus(Character):
 
     def move(self, direction):
         if direction == 'right':
+            self.sheet = load_image(config.zero_suit_move_right_sheet, True)
             self.clip(self.right_states)
             if self.posx <= config.screen_width-self.width:
-                self.dx = 0#self.speed[0]
+                self.dx = self.speed[0]
             else:
                 self.dx = 0
                 self.posx = config.screen_width - self.width
         elif direction == 'left':
+            self.sheet = load_image(config.zero_suit_move_left_sheet, True)
             self.clip(self.left_states)
             if self.posx >= 0:
                 self.dx = -self.speed[0]
@@ -101,14 +107,13 @@ class Samus(Character):
                 self.posx = 0
 
         elif direction == 'stand_right':
-            self.clip(self.right_states[1])
+            self.clip(self.right_states[5])
             self.dx = 0
         elif direction == 'stand_left':
             self.clip(self.left_states[0])
             self.dx = 0
 
         self.image = self.sheet.subsurface(self.sheet.get_clip())
-        self.rect = self.image.get_rect()
 
 
     def calculate_gravity(self):

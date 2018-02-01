@@ -42,7 +42,8 @@ bg_main_menu = menu+'/bg_main_menu.png' \
 
 # Characters                    ''
 characters = 'resources/images/character'
-samus_zero_sheet = characters+'/zero_suit_sheet.png'
+zero_suit_move_right_sheet = characters+'/zero_suit_move_right_sheet.png'
+zero_suit_move_left_sheet = characters+'/zero_suit_move_left_sheet.png'
 
 # Audio
 audio = 'resources/audio'
