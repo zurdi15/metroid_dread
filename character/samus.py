@@ -14,34 +14,27 @@ from ammo import Shot
 
 
 class Samus(Character):
+
     def __init__(self, px, py):
         Character.__init__(self)
-
         # Cargamos el sheet
         self.sheet = load_image(config.zero_suit_stand_sheet, True)
-
         # Definimos medidas
         self.width_stand = 69
         self.height_stand = 108
         self.width_move = 105
         self.height_move = 118
-
         # Definimos el tamaño de cada clip del sheet
         self.sheet.set_clip(pygame.Rect(self.width_stand, 0, self.width_stand, self.height_stand))
-
         # Recogemos la imagen inicial del sheet
         self.image = self.sheet.subsurface(self.sheet.get_clip())
-
         # Recogemos el rect de la imagen
         self.rect = self.image.get_rect()
-
         # Establecemos el primer frame de la animacion a 0 (hay 4)
         self.frame = 0
-
         # Definimos cada estado con sus coordenadas
         self.stand_states =  {0: (self.width_stand, 0, self.width_stand, self.height_stand),
                               1: (0, 0, self.width_stand, self.height_stand),}
-
         self.right_move_states = {0: (0, 0, self.width_move, self.height_move),
                                   1: (self.width_move, 0, self.width_move, self.height_move),
                                   2: (self.width_move * 2, 0, self.width_move, self.height_move),
@@ -52,7 +45,6 @@ class Samus(Character):
                                   7: (self.width_move * 7, 0, self.width_move, self.height_move),
                                   8: (self.width_move * 8, 0, self.width_move, self.height_move),
                                   9: (self.width_move * 9, 0, self.width_move, self.height_move), }
-
         self.left_move_states = {0: (self.width_move * 9, 0, self.width_move, self.height_move),
                                  1: (self.width_move * 8, 0, self.width_move, self.height_move),
                                  2: (self.width_move * 7, 0, self.width_move, self.height_move),
@@ -63,11 +55,8 @@ class Samus(Character):
                                  7: (self.width_move * 2, 0, self.width_move, self.height_move),
                                  8: (self.width_move, 0, self.width_move, self.height_move),
                                  9: (0, 0, self.width_move, self.height_move), }
-
-
         # Definimos el delay de la animacion
         self.updated = pygame.time.get_ticks()
-
         # Variables de movimiento
         self.direction = 'right'
         self.posx = px
@@ -127,7 +116,6 @@ class Samus(Character):
             else:
                 self.dx = 0
                 self.posx = 0
-
         elif direction == 'stand_right':
             self.direction = 'right'
             self.sheet = load_image(config.zero_suit_stand_sheet, True)
@@ -138,7 +126,6 @@ class Samus(Character):
             self.sheet = load_image(config.zero_suit_stand_sheet, True)
             self.clip(self.stand_states[1])
             self.dx = 0
-
         self.image = self.sheet.subsurface(self.sheet.get_clip())
 
 
@@ -155,7 +142,6 @@ class Samus(Character):
 
     def update(self):
         self.calculate_gravity()
-
         self.posx = self.posx + self.dx
         self.posy = self.posy + self.dy
         if self.direction == 'left':
@@ -164,12 +150,10 @@ class Samus(Character):
         elif self.direction == 'right':
             self.gunx = self.posx + self.width_stand - 15
             self.guny = self.posy + 15
-
         if self.posy + self.rect.height > config.screen_height:
             self.posy = config.screen_height - self.rect.height
             self.jumping = False
             self.dy = 0
-
         if self.updated + config.fps <= pygame.time.get_ticks():
             keys = pygame.key.get_pressed()
             if keys[K_d]:

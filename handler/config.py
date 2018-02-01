@@ -4,9 +4,6 @@
 
 """
 General configuration of the project:
-    - device:
-        1 = pc
-        2 = 3ds
 """
 
 
@@ -61,7 +58,7 @@ main_menu_audio = audio+'/music_menu.ogg'
 
 # Video
 video = 'resources/video'
-intro_movie = video+'/intro_movie.mepg'
+intro_movie = video+'/intro_movie.mp4'
 
 # Fonts
 fonts = 'resources/fonts'

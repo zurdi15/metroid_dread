@@ -11,12 +11,13 @@ from scene import SceneStart, SceneMainMenu,SceneGame
 
 
 def main():
+    pygame.init()
+    pygame.event.set_grab(True)
     director = Director()
-    scene = SceneStart(director)
+    scene = SceneGame(director)
     director.change_scene(scene)
     director.loop()
 
 
 if __name__ == '__main__':
-    pygame.init()
     main()

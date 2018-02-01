@@ -6,7 +6,8 @@
 # ---------------------------------------------------------------------
 import pygame
 from pygame.locals import *
-from pygame import movie
+import moviepy
+from moviepy.editor import *
 from handler import config
 from scene import Scene
 from handler import graphics
@@ -22,8 +23,9 @@ class SceneStart(Scene):
         self.name = 'scene_start'
         self.main_menu = False
         self.bg = graphics.load_image(config.bg_start_game)
+        #self.intro_init()
         self.music_init()
-        self.intro_init()
+
 
     def on_update(self):
         if self.main_menu:
@@ -31,15 +33,18 @@ class SceneStart(Scene):
             scene = SceneMainMenu(self.director)
             self.director.change_scene(scene)
 
+
     def on_event(self):
         for event in pygame.event.get():
             if event.type == MOUSEBUTTONDOWN:
                 if event.button == 1:
                     self.main_menu = True
             if event.type == KEYDOWN:
-                if event.key == pygame.K_RETURN:
+                if event.key == K_ESCAPE:
+                    self.director.quit()
+                elif event.key == K_RETURN:
                     self.main_menu = True
-                if event.key == pygame.K_m:
+                elif event.key == K_m:
                     if self.director.music_flag:
                         pygame.mixer.music.pause()
                         self.director.music_flag = False
@@ -47,15 +52,15 @@ class SceneStart(Scene):
                         pygame.mixer.music.unpause()
                         self.director.music_flag = True
 
+
     def on_draw(self, screen):
         screen.blit(self.bg, (0, 0))
 
+
     @staticmethod
     def intro_init():
-        movie = pygame.movie.Movie(config.intro_movie)
-        movie_screen = pygame.Surface(movie.get_size()).convert()
-        movie.set_display(movie_screen)
-        movie.play()
+        VideoFileClip(config.intro_movie).preview()
+
 
     @staticmethod
     def music_init():

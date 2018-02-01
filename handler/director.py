@@ -29,31 +29,28 @@ class Director:
         self.music_flag = True
         self.quit_flag = False
 
+
     def loop(self):
         """Pone en funcionamiento el juego."""
-
         while not self.quit_flag:
             self.time = self.clock.tick(config.fps)
-
             # Eventos
             for event in pygame.event.get(QUIT):
                 self.quit()
-
             # detecta eventos
             self.scene.on_event()
-
             # actualiza la escena
             self.scene.on_update()
-
             # dibuja la pantalla
             self.scene.on_draw(self.screen)
-
             pygame.display.update()
+
 
     def change_scene(self, scene):
         """Altera la escena actual."""
         self.scene_dict[scene.name] = scene
         self.scene = scene
+
 
     def quit(self):
         self.quit_flag = True

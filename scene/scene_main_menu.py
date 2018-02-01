@@ -49,6 +49,7 @@ class SceneMainMenu(Scene):
         self.menu_element_selected = graphics.load_image(config.element_main_menu_selected, True)
         self.menu_element_selected.set_alpha(self.element_opacity_selected)
 
+
     def on_update(self):
         pygame.mouse.set_visible(True)
         if self.start:
@@ -61,8 +62,8 @@ class SceneMainMenu(Scene):
             self.game = False
             scene = SceneGame(self.director)
             self.director.change_scene(scene)
-
         self.check_menu()
+
 
     def on_event(self):
         for event in pygame.event.get():
@@ -71,11 +72,13 @@ class SceneMainMenu(Scene):
                     if self.menu_element_1_selected:
                         self.game = True
             if event.type == KEYDOWN:
-                if event.key == K_BACKSPACE:
+                if event.key == K_ESCAPE:
+                    self.director.quit()
+                elif event.key == K_BACKSPACE:
                     self.start = True
-                if event.key == pygame.K_RETURN:
+                elif event.key == pygame.K_RETURN:
                     self.game = True
-                if event.key == pygame.K_m:
+                elif event.key == pygame.K_m:
                     if self.director.music_flag:
                         pygame.mixer.music.pause()
                         self.director.music_flag = False
@@ -83,9 +86,9 @@ class SceneMainMenu(Scene):
                         pygame.mixer.music.unpause()
                         self.director.music_flag = True
 
+
     def on_draw(self, screen):
         screen.blit(self.bg, (0, 0))
-
         if self.menu_element_1_selected:
             screen.blit(self.menu_element_selected, self.menu_element_1_rect)
         else:
@@ -100,6 +103,7 @@ class SceneMainMenu(Scene):
             screen.blit(self.menu_element_selected, self.menu_element_3_rect)
         else:
             screen.blit(self.menu_element_3, self.menu_element_3_rect)
+
 
     def check_menu(self):
         if self.menu_element_1_rect.collidepoint(pygame.mouse.get_pos()):
