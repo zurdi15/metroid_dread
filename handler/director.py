@@ -25,9 +25,9 @@ class Director:
         self.scene = None
         self.scene_dict = {}
         self.clock = pygame.time.Clock()
+        self.time = 0
         self.music_flag = True
         self.quit_flag = False
-        self.time = 0
 
     def loop(self):
         """Pone en funcionamiento el juego."""
@@ -52,7 +52,7 @@ class Director:
 
     def change_scene(self, scene):
         """Altera la escena actual."""
-        self.scene_dict[scene.name]=scene
+        self.scene_dict[scene.name] = scene
         self.scene = scene
 
     def quit(self):

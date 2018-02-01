@@ -19,18 +19,21 @@ class SceneMainMenu(Scene):
     def __init__(self, director):
         Scene.__init__(self, director)
         self.name = 'scene_main_menu'
-        self.bg = graphics.load_image(config.bg_main_menu)
         self.START = False
         self.GAME = False
+        self.bg = graphics.load_image(config.bg_main_menu)
 
     def on_update(self):
+        if self.START:
+            self.START = False
+            try:
+                self.director.change_scene(self.director.scene_dict['scene_start'])
+            except Exception:
+                print 'Imposible cambiar de escena'
         if self.GAME:
             self.GAME = False
             scene = SceneGame(self.director)
             self.director.change_scene(scene)
-        if self.START:
-            self.START = False
-            self.director.change_scene(self.director.scene_dict['scene_start'])
 
     def on_event(self):
         for event in pygame.event.get():

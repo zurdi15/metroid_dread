@@ -6,6 +6,8 @@
 # ---------------------------------------------------------------------
 import pygame
 from pygame.locals import *
+from handler import config
+from handler import graphics
 from scene import Scene
 from character import Samus
 # ---------------------------------------------------------------------
@@ -18,23 +20,39 @@ class SceneGame(Scene):
         Scene.__init__(self, director)
         self.name = 'scene_game'
         self.MAIN_MENU = False
-        self.samus = Samus(400, 100)
+        self.controls_left, self.controls_left_rect = graphics.load_text("left: A", 50, 30, size=15)
+        self.controls_right, self.controls_right_rect = graphics.load_text("right: D", 50, 50, size = 15)
+        self.controls_jump, self.controls_jump_rect = graphics.load_text("jump: space", 50, 70, size = 15)
+        self.controls_shot, self.controls_shot_rect = graphics.load_text("shot: left click", 50, 90, size = 15)
+        self.samus = Samus(100, config.screen_height-108)
+
 
     def on_update(self):
         if self.MAIN_MENU:
             self.MAIN_MENU = False
-            self.director.change_scene(self.director.scene_dict['scene_main_menu'])
+            try:
+                self.director.change_scene(self.director.scene_dict['scene_main_menu'])
+            except Exception:
+                print 'Imposible cambiar de escena'
         self.samus.update()
+
+        for shot in self.samus.shot_list:
+            if shot.posx > config.screen_width or shot.posx < 0:
+                self.samus.shot_list.remove(shot)
+                continue
+            shot.update()
 
     def on_event(self):
 
         # Controla todas las teclas
         for event in pygame.event.get():
-            if event.type == KEYUP:
-                pass
-                if event.key == K_RIGHT:
+            if event.type == MOUSEBUTTONDOWN:
+                if event.button == 1:
+                    self.samus.shot()
+            elif event.type == KEYUP:
+                if event.key == K_d:
                     self.samus.move('stand_right')
-                elif event.key == K_LEFT:
+                elif event.key == K_a:
                     self.samus.move('stand_left')
             elif event.type == KEYDOWN:
                 if event.key == K_BACKSPACE:
@@ -51,4 +69,10 @@ class SceneGame(Scene):
 
     def on_draw(self, screen):
         screen.fill([0, 0, 0])
+        for shot in self.samus.shot_list:
+            screen.blit(shot.image, (shot.posx, shot.posy))
         screen.blit(self.samus.image, (self.samus.posx, self.samus.posy))
+        screen.blit(self.controls_left, self.controls_left_rect)
+        screen.blit(self.controls_right, self.controls_right_rect)
+        screen.blit(self.controls_jump, self.controls_jump_rect)
+        screen.blit(self.controls_shot, self.controls_shot_rect)

@@ -22,10 +22,10 @@ def load_image(filename, transparent=False):
     return image
 
 
-def load_text(text, posx, posy, color=(255, 255, 255)):
-    source = pygame.font.Font("resources/fonts/DroidSans.ttf", 45)
-    score_image = pygame.font.Font.render(source, text, 1, color)
-    score_image_rect = score_image.get_rect()
-    score_image_rect.centerx = posx
-    score_image_rect.centery = posy
-    return score_image, score_image_rect
+def load_text(text, posx, posy, color=(255, 255, 255), size=45):
+    source = pygame.font.Font(config.droid_sans, size)
+    text_image = pygame.font.Font.render(source, text, 1, color)
+    text_image_rect = text_image.get_rect()
+    text_image_rect.centerx = posx
+    text_image_rect.centery = posy
+    return text_image, text_image_rect

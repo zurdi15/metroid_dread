@@ -19,8 +19,8 @@ class SceneStart(Scene):
     def __init__(self, director):
         Scene.__init__(self, director)
         self.name = 'scene_start'
-        self.bg = graphics.load_image(config.bg_start_game)
         self.MAIN_MENU = False
+        self.bg = graphics.load_image(config.bg_start_game)
 
     def on_update(self):
         if self.MAIN_MENU:

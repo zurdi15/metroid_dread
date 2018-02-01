@@ -46,9 +46,17 @@ zero_suit_stand_sheet = characters+'/zero_suit_stand_sheet.png'
 zero_suit_move_right_sheet = characters+'/zero_suit_move_right_sheet.png'
 zero_suit_move_left_sheet = characters+'/zero_suit_move_left_sheet.png'
 
+# Ammo
+ammo = 'resources/images/ammo'
+shot = ammo+'/shot.png'
+
 # Audio
 audio = 'resources/audio'
 main_menu_audio = audio+'/music_menu.ogg'
+
+# Fonts
+fonts = 'resources/fonts'
+droid_sans = fonts+'/droid_sans.ttf'
 
 # TEST
 test_bg = 'resources/test/test_bg.png'
