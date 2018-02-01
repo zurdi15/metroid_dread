@@ -40,28 +40,28 @@ class Samus(Character):
         self.frame = 0
 
         # Definimos cada estado con sus coordenadas
-        self.right_states = {0: (0, 0, self.width, self.height),
-                             1: (self.width, 0, self.width*2, self.height),
-                             2: (self.width*2, self.height, self.width*3, self.height),
-                             3: (self.width*3, self.height, self.width*4, self.height),
-                             4: (0, self.height, self.width, self.height*2),
-                             5: (self.width, self.height, self.width*2, self.height*2),
-                             6: (self.width*2, self.height, self.width*3, self.height*2)}
+        self.right_states = {0: (0, 0, 93, 111),
+                             1: (93, 0, 93, 111),
+                             2: (93*2, 0, 93, 111),
+                             3: (93*3, 0, 93, 111),
+                             4: (93*4, 0, 93, 111),
+                             5: (93*5, 0, 93, 111),
+                             6: (93*6, 0, 93, 111)}
 
-        self.left_states = {0: (0, 0, self.width, self.height),
-                            1: (self.width, 0, self.width * 2, self.height),
-                            2: (self.width * 2, self.height, self.width * 3, self.height),
-                            3: (self.width * 3, self.height, self.width * 4, self.height),
-                            4: (0, self.height, self.width, self.height * 2),
-                            5: (self.width, self.height, self.width * 2, self.height * 2),
-                            6: (self.width * 2, self.height, self.width * 3, self.height * 2)}
+        self.left_states = {0: (0, 0, 93, 111),
+                             1: (93, 0, 93, 111),
+                             2: (93*2, 0, 93, 111),
+                             3: (93*3, 0, 93, 111),
+                             4: (93*4, 0, 93, 111),
+                             5: (93*5, 0, 93, 111),
+                             6: (93*6, 0, 93, 111)}
 
         # Definimos el delay de la animacion
         self.updated = pygame.time.get_ticks()
 
         # Variables de movimiento
-        self.rect.x = px
-        self.rect.y = py
+        self.posx = px
+        self.posy = py
         self.dx = 0
         self.dy = 0
         self.speed = [10 / config.device, 10 / config.device]
@@ -72,7 +72,6 @@ class Samus(Character):
 
     # Funcion para recoger el sprite marcado por self.frame
     def get_frame(self, frame_set):
-        print self.frame
         self.frame += 1
         if self.frame > (len(frame_set) - 1):
             self.frame = 0
@@ -89,18 +88,18 @@ class Samus(Character):
     def move(self, direction):
         if direction == 'left':
             self.clip(self.left_states)
-            if self.rect.x >= 0:
+            if self.posx >= 0:
                 self.dx = -self.speed[0]
             else:
                 self.dx = 0
-                self.rect.x = 0
+                self.posx = 0
         elif direction == 'right':
             self.clip(self.right_states)
-            if self.rect.x <= config.screen_width-self.width:
+            if self.posx <= config.screen_width-self.width:
                 self.dx = self.speed[0]
             else:
                 self.dx = 0
-                self.rect.x = config.screen_width - self.width
+                self.posx = config.screen_width - self.width
         elif direction == 'stand_left':
             self.clip(self.left_states[0])
             self.dx = 0
@@ -109,6 +108,7 @@ class Samus(Character):
             self.dx = 0
 
         self.image = self.sheet.subsurface(self.sheet.get_clip())
+        self.rect = self.image.get_rect()
 
 
     def calculate_gravity(self):
@@ -127,11 +127,11 @@ class Samus(Character):
     def update(self):
         self.calculate_gravity()
 
-        self.rect.x = self.rect.x + self.dx
-        self.rect.y = self.rect.y + self.dy
+        self.posx = self.posx + self.dx
+        self.posy = self.posy + self.dy
 
-        if self.rect.y + self.rect.height > config.screen_height:
-            self.rect.y = config.screen_height - self.rect.height
+        if self.posy + self.rect.height > config.screen_height:
+            self.posy = config.screen_height - self.rect.height
             self.jumping = False
             self.dy = 0
 

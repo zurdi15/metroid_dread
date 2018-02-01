@@ -26,6 +26,7 @@ class SceneGame(scene.Scene):
         # Controla todas las teclas
         for event in pygame.event.get():
             if event.type == KEYUP:
+                pass
                 if event.key == K_RIGHT:
                     self.samus.move('stand_right')
                 elif event.key == K_LEFT:
@@ -43,4 +44,4 @@ class SceneGame(scene.Scene):
 
     def on_draw(self, screen):
         screen.fill([0, 0, 0])
-        screen.blit(self.samus.image, self.samus.rect)
+        screen.blit(self.samus.image, (self.samus.posx, self.samus.posy))
