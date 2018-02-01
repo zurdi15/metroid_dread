@@ -29,7 +29,7 @@ os.environ['SDL_VIDEO_CENTERED'] = '1'
 samus_transparent = (153, 179, 193)
 
 # Parameters
-gravity = 0.7
+gravity = 0.7 / device
 
 # Directories
 # Start game

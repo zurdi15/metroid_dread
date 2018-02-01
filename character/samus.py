@@ -21,10 +21,10 @@ class Samus(Character):
         self.sheet = load_image(config.zero_suit_stand_sheet, True)
 
         # Definimos medidas
-        self.width_stand = 69
-        self.height_stand = 108
-        self.width_move = 105
-        self.height_move = 118
+        self.width_stand = 69/config.device
+        self.height_stand = 108/config.device
+        self.width_move = 105/config.device
+        self.height_move = 118/config.device
 
         # Definimos el tamaño de cada clip del sheet
         self.sheet.set_clip(pygame.Rect(self.width_stand, 0, self.width_stand, self.height_stand))
@@ -75,11 +75,11 @@ class Samus(Character):
         self.dx = 0
         self.dy = 0
         self.speed = [10 / config.device, 10 / config.device]
-        self.jump_force = 15
+        self.jump_force = 15/config.device
         self.jumping = True
         self.moving = False
         self.gunx = self.posx
-        self.guny = self.posy + 15
+        self.guny = self.posy + 15/config.device
         self.shot_list = []
         self.updated = pygame.time.get_ticks()
 
@@ -129,10 +129,12 @@ class Samus(Character):
                 self.posx = 0
 
         elif direction == 'stand_right':
+            self.direction = 'right'
             self.sheet = load_image(config.zero_suit_stand_sheet, True)
             self.clip(self.stand_states[0])
             self.dx = 0
         elif direction == 'stand_left':
+            self.direction = 'left'
             self.sheet = load_image(config.zero_suit_stand_sheet, True)
             self.clip(self.stand_states[1])
             self.dx = 0
@@ -158,10 +160,10 @@ class Samus(Character):
         self.posy = self.posy + self.dy
         if self.direction == 'left':
             self.gunx = self.posx
-            self.guny = self.posy + 15
+            self.guny = self.posy + 15/config.device
         elif self.direction == 'right':
             self.gunx = self.posx + self.width_stand
-            self.guny = self.posy + 15
+            self.guny = self.posy + 15/config.device
 
         if self.posy + self.rect.height > config.screen_height:
             self.posy = config.screen_height - self.rect.height
