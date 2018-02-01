@@ -22,6 +22,8 @@ class Samus(Character):
         # Definimos medidas
         self.width_move = 105
         self.height_move = 118
+        self.width_stand = 80
+        self.height_stand = 108
 
         # Definimos el tamaño de cada clip del sheet
         self.sheet.set_clip(pygame.Rect(0, 0, self.width_move, self.height_move))
@@ -36,27 +38,28 @@ class Samus(Character):
         self.frame = 0
 
         # Definimos cada estado con sus coordenadas
-        self.right_states = {0: (0, 0, self.width_move, self.height_move),
-                             1: (self.width_move, 0, self.width_move, self.height_move),
-                             2: (self.width_move * 2, 0, self.width_move, self.height_move),
-                             3: (self.width_move * 3, 0, self.width_move, self.height_move),
-                             4: (self.width_move * 4, 0, self.width_move, self.height_move),
-                             5: (self.width_move * 5, 0, self.width_move, self.height_move),
-                             6: (self.width_move * 6, 0, self.width_move, self.height_move),
-                             7: (self.width_move * 7, 0, self.width_move, self.height_move),
-                             8: (self.width_move * 8, 0, self.width_move, self.height_move),
-                             9: (self.width_move * 9, 0, self.width_move, self.height_move), }
+        self.right_stand_states = {0: (0, 0, self.width_stand, self.height_stand)}
+        self.right_move_states = {0: (0, 0, self.width_move, self.height_move),
+                                  1: (self.width_move, 0, self.width_move, self.height_move),
+                                  2: (self.width_move * 2, 0, self.width_move, self.height_move),
+                                  3: (self.width_move * 3, 0, self.width_move, self.height_move),
+                                  4: (self.width_move * 4, 0, self.width_move, self.height_move),
+                                  5: (self.width_move * 5, 0, self.width_move, self.height_move),
+                                  6: (self.width_move * 6, 0, self.width_move, self.height_move),
+                                  7: (self.width_move * 7, 0, self.width_move, self.height_move),
+                                  8: (self.width_move * 8, 0, self.width_move, self.height_move),
+                                  9: (self.width_move * 9, 0, self.width_move, self.height_move), }
 
-        self.left_states = {0: (self.width_move * 9, 0, self.width_move, self.height_move),
-                            1: (self.width_move * 8, 0, self.width_move, self.height_move),
-                            2: (self.width_move * 7, 0, self.width_move, self.height_move),
-                            3: (self.width_move * 6, 0, self.width_move, self.height_move),
-                            4: (self.width_move * 5, 0, self.width_move, self.height_move),
-                            5: (self.width_move * 4, 0, self.width_move, self.height_move),
-                            6: (self.width_move * 3, 0, self.width_move, self.height_move),
-                            7: (self.width_move * 2, 0, self.width_move, self.height_move),
-                            8: (self.width_move, 0, self.width_move, self.height_move),
-                            9: (0, 0, self.width_move, self.height_move), }
+        self.left_move_stgates = {0: (self.width_move * 9, 0, self.width_move, self.height_move),
+                                 1: (self.width_move * 8, 0, self.width_move, self.height_move),
+                                 2: (self.width_move * 7, 0, self.width_move, self.height_move),
+                                 3: (self.width_move * 6, 0, self.width_move, self.height_move),
+                                 4: (self.width_move * 5, 0, self.width_move, self.height_move),
+                                 5: (self.width_move * 4, 0, self.width_move, self.height_move),
+                                 6: (self.width_move * 3, 0, self.width_move, self.height_move),
+                                 7: (self.width_move * 2, 0, self.width_move, self.height_move),
+                                 8: (self.width_move, 0, self.width_move, self.height_move),
+                                 9: (0, 0, self.width_move, self.height_move), }
 
 
         # Definimos el delay de la animacion
@@ -91,7 +94,7 @@ class Samus(Character):
     def move(self, direction):
         if direction == 'right':
             self.sheet = load_image(config.zero_suit_move_right_sheet, True)
-            self.clip(self.right_states)
+            self.clip(self.right_move_states)
             if self.posx <= config.screen_width-self.width_move:
                 self.dx = self.speed[0]
             else:
@@ -99,7 +102,7 @@ class Samus(Character):
                 self.posx = config.screen_width - self.width_move
         elif direction == 'left':
             self.sheet = load_image(config.zero_suit_move_left_sheet, True)
-            self.clip(self.left_states)
+            self.clip(self.left_move_states)
             if self.posx >= 0:
                 self.dx = -self.speed[0]
             else:
@@ -107,10 +110,10 @@ class Samus(Character):
                 self.posx = 0
 
         elif direction == 'stand_right':
-            self.clip(self.right_states[0])
+            self.clip(self.right_move_states[0])
             self.dx = 0
         elif direction == 'stand_left':
-            self.clip(self.left_states[0])
+            self.clip(self.left_move_states[0])
             self.dx = 0
 
         self.image = self.sheet.subsurface(self.sheet.get_clip())
