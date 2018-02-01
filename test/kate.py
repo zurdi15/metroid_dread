@@ -5,10 +5,8 @@
 # ---------------------------------------------------------------------
 import pygame
 from pygame.locals import *
-import graphics
+from handler import graphics
 from handler import config
-
-
 # ---------------------------------------------------------------------
 
 class Kate(pygame.sprite.Sprite):
@@ -58,7 +56,7 @@ class Kate(pygame.sprite.Sprite):
             self.frame = 0
         return frame_set[self.frame]
 
-    # Funcion para
+
     def clip(self, clipped_rect):
         if type(clipped_rect) is dict:
             self.sheet.set_clip(pygame.Rect(self.get_frame(clipped_rect)))

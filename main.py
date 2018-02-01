@@ -22,9 +22,9 @@ def music_init():
 
 
 def main():
-    music_init()
+    #music_init()
     director = Director()
-    scene = SceneStart(director)
+    scene = SceneGame(director)
     director.change_scene(scene)
     director.loop()
 

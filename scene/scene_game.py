@@ -16,7 +16,7 @@ class SceneGame(scene.Scene):
     def __init__(self, director):
         """Escena del juego"""
         scene.Scene.__init__(self, director)
-        self.samus = Samus(100, 100)
+        self.samus = Samus(400, 100)
 
     def on_update(self):
         self.samus.update()
