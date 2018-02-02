@@ -80,7 +80,11 @@ class SceneGame(Scene):
 
     def on_draw(self, screen):
         screen.fill(config.black)
+        # r = pygame.Surface((self.samus.rect.width, self.samus.rect.height))
+        # r.fill((255, 255, 255))
+        # screen.blit(r, self.samus.rect)
         self.sprites.draw(screen)
+
         self.draw_controls(screen)
 
 

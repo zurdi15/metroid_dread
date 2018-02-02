@@ -59,6 +59,7 @@ class Samus(Character):
                                  9: (0, 0, self.width_move, self.height_move), }
         # Definimos el delay de la animacion
         self.updated = pygame.time.get_ticks()
+        self.anim_delay = 60
         # Variables de movimiento
         self.direction = 'right'
         self.dx = 0
@@ -97,8 +98,6 @@ class Samus(Character):
         if direction == 'right':
             self.direction = 'right'
             self.moving = True
-            self.sheet = load_image(config.zero_suit_move_right_sheet, True)
-            self.clip(self.right_move_states)
             if self.rect.right <= config.screen_width:
                 self.dx = self.speed[0]
             else:
@@ -106,8 +105,6 @@ class Samus(Character):
         elif direction == 'left':
             self.direction = 'left'
             self.moving = True
-            self.sheet = load_image(config.zero_suit_move_left_sheet, True)
-            self.clip(self.left_move_states)
             if self.rect.left >= 0:
                 self.dx = -self.speed[0]
             else:
@@ -122,10 +119,17 @@ class Samus(Character):
             self.sheet = load_image(config.zero_suit_stand_sheet, True)
             self.clip(self.stand_states[1])
             self.dx = 0
-        else:
-            raise Exception
+
         self.image = self.sheet.subsurface(self.sheet.get_clip())
 
+
+    def animation(self, direction):
+        if direction == 'right':
+            self.sheet = load_image(config.zero_suit_move_right_sheet, True)
+            self.clip(self.right_move_states)
+        elif direction == 'left':
+            self.sheet = load_image(config.zero_suit_move_left_sheet, True)
+            self.clip(self.left_move_states)
 
     def jump(self):
         if not self.jumping:
@@ -155,10 +159,15 @@ class Samus(Character):
             self.jumping = False
             self.dy = 0
 
-        if self.updated + config.fps <= pygame.time.get_ticks():
-            keys = pygame.key.get_pressed()
-            if keys[K_d]:
-                self.move('right')
-            elif keys[K_a]:
-                self.move('left')
-            self.updated = pygame.time.get_ticks()
+
+        keys = pygame.key.get_pressed()
+        if keys[K_d]:
+            self.move('right')
+            if self.updated + self.anim_delay <= pygame.time.get_ticks():
+                self.animation('right')
+                self.updated = pygame.time.get_ticks()
+        elif keys[K_a]:
+            self.move('left')
+            if self.updated + self.anim_delay <= pygame.time.get_ticks():
+                self.animation('left')
+                self.updated = pygame.time.get_ticks()
