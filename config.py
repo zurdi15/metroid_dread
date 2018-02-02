@@ -17,8 +17,8 @@ import os
 TITLE = 'Metroid: Dread'
 
 # Resolution
-SCREEN_WIDTH = 800
-SCREEN_HEIGHT = 480
+SCREEN_WIDTH = 800#1366
+SCREEN_HEIGHT = 480#768
 FPS = 60
 os.environ['SDL_VIDEO_CENTERED'] = '1'
 

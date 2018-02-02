@@ -18,7 +18,6 @@ def load_image(filename, transparent=False):
     if transparent:
         color = image.get_at((0, 0))
         image.set_colorkey(color, RLEACCEL)
-    image = pg.transform.scale(image, (image.get_size()[0], image.get_size()[1]))
     return image
 
 

@@ -50,6 +50,8 @@ class SceneMainMenu(Scene):
         self.menu_element_selected = graphics.load_image(ELEMENT_MAIN_MENU_SELECTED, True)
         self.menu_element_selected.set_alpha(self.element_opacity_selected)
 
+        self.e1_text, self.e1_text_rect = graphics.load_text("New game", SCREEN_WIDTH / 2, SCREEN_HEIGHT / 4 )
+
 
     def on_event(self):
         for event in pygame.event.get():
@@ -104,6 +106,9 @@ class SceneMainMenu(Scene):
             screen.blit(self.menu_element_selected, self.menu_element_3_rect)
         else:
             screen.blit(self.menu_element_3, self.menu_element_3_rect)
+
+        screen.blit(self.e1_text, self.e1_text_rect)
+
 
 
     def check_menu(self):

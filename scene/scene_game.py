@@ -31,9 +31,13 @@ class SceneGame(Scene):
         self.sprites.add(self.samus)
         # Controls
         self.controls_left, self.controls_left_rect = graphics.load_text("left: A", 50, 30, size=15)
-        self.controls_right, self.controls_right_rect = graphics.load_text("right: D", 50, 50, size=15)
-        self.controls_jump, self.controls_jump_rect = graphics.load_text("jump: space", 50, 70, size=15)
-        self.controls_shot, self.controls_shot_rect = graphics.load_text("shot: left click", 50, 90, size=15)
+        self.controls_left_rect.left = 30
+        self.controls_right, self.controls_right_rect = graphics.load_text("right: D", 50, 60, size=15)
+        self.controls_right_rect.left = 30
+        self.controls_jump, self.controls_jump_rect = graphics.load_text("jump: space", 50, 90, size=15)
+        self.controls_jump_rect.left = 30
+        self.controls_shot, self.controls_shot_rect = graphics.load_text("shot: mouse_1", 50, 120, size=15)
+        self.controls_shot_rect.left = 30
 
 
     def on_event(self):
@@ -75,8 +79,8 @@ class SceneGame(Scene):
                 self.samus.pos.y = hits[0].rect.top
                 self.samus.vel.y = 0
 
-
-        # Running right
+        print self.samus.vel.x
+        # Running right - moving camera
         if self.samus.direction == 'right':
             self.samus.pos.x -= self.samus.vel.x
             self.ground.rect.x -= self.samus.vel.x
@@ -85,9 +89,9 @@ class SceneGame(Scene):
                 if shot.pos.x < -10 or shot.pos.x > SCREEN_WIDTH:
                     shot.kill()
 
-        # Running left
+        # Running left - moving camera
         if self.samus.direction == 'left':
-            self.samus.pos.x += self.samus.vel.x
+            self.samus.pos.x -= self.samus.vel.x
             self.ground.rect.x += abs(self.samus.vel.x)
             for shot in self.samus.shot_list:
                 shot.pos.x += self.samus.vel.x
@@ -104,6 +108,7 @@ class SceneGame(Scene):
 
     def on_draw(self, screen):
         screen.fill(BLACK)
+        #self.draw_samus_rect(screen)
         self.sprites.draw(screen)
         self.draw_controls(screen)
 
@@ -113,3 +118,9 @@ class SceneGame(Scene):
         screen.blit(self.controls_right, self.controls_right_rect)
         screen.blit(self.controls_jump, self.controls_jump_rect)
         screen.blit(self.controls_shot, self.controls_shot_rect)
+
+
+    def draw_samus_rect(self, screen):
+        r = pg.Surface((self.samus.rect.width, self.samus.rect.height))
+        r.fill((255, 255, 255))
+        screen.blit(r, self.samus.rect)
