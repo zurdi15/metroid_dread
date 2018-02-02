@@ -23,30 +23,14 @@ class SceneGame(Scene):
         self.main_menu = False
         self.screen_limit_x = (0, config.screen_width)
         self.screen_limit_y = (0, config.screen_height)
-        self.samus = Samus(0, 0)
-        self.samus.posx = 100
-        self.samus.posy = config.screen_height - self.samus.height_stand
+        self.sprites = pygame.sprite.Group()
+        self.samus = Samus(100, 100, self)
+        self.sprites.add(self.samus)
         # Controls
         self.controls_left, self.controls_left_rect = graphics.load_text("left: A", 50, 30, size=15)
         self.controls_right, self.controls_right_rect = graphics.load_text("right: D", 50, 50, size=15)
         self.controls_jump, self.controls_jump_rect = graphics.load_text("jump: space", 50, 70, size=15)
         self.controls_shot, self.controls_shot_rect = graphics.load_text("shot: left click", 50, 90, size=15)
-
-
-    def on_update(self):
-        if self.main_menu:
-            self.main_menu = False
-            try:
-                self.director.change_scene(self.director.scene_dict['scene_main_menu'])
-            except Exception:
-                print 'Imposible cambiar de escena'
-        self.samus.update()
-
-        for shot in self.samus.shot_list:
-            if shot.posx > self.screen_limit_x[1] or shot.posx < self.screen_limit_x[0]:
-                self.samus.shot_list.remove(shot)
-                continue
-            shot.update()
 
 
     def on_event(self):
@@ -55,11 +39,13 @@ class SceneGame(Scene):
             if event.type == MOUSEBUTTONDOWN:
                 if event.button == 1:
                     self.samus.shot()
+
             elif event.type == KEYUP:
                 if event.key == K_d:
                     self.samus.move('stand_right')
                 elif event.key == K_a:
                     self.samus.move('stand_left')
+
             elif event.type == KEYDOWN:
                 if event.key == K_ESCAPE:
                     self.director.quit()
@@ -76,11 +62,24 @@ class SceneGame(Scene):
                         self.director.music_flag = True
 
 
+    def on_update(self):
+        if self.main_menu:
+            self.main_menu = False
+            try:
+                self.director.change_scene(self.director.scene_dict['scene_main_menu'])
+            except Exception:
+                print 'Imposible cambiar de escena'
+        self.samus.update()
+
+        for shot in self.samus.shot_list:
+            if shot.rect.right <= self.screen_limit_x[0] or shot.rect.left >= self.screen_limit_x[1]:
+                self.samus.shot_list.remove(shot)
+            shot.update()
+
+
     def on_draw(self, screen):
         screen.fill(config.black)
-        for shot in self.samus.shot_list:
-            screen.blit(shot.image, (shot.posx, shot.posy))
-        screen.blit(self.samus.image, (self.samus.posx, self.samus.posy))
+        self.sprites.draw(screen)
         self.draw_controls(screen)
 
 

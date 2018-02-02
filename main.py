@@ -12,7 +12,7 @@ from scene import SceneStart, SceneMainMenu,SceneGame
 
 def main():
     pygame.init()
-    pygame.event.set_grab(True)
+    #pygame.event.set_grab(True)
     director = Director()
     scene = SceneGame(director)
     director.change_scene(scene)

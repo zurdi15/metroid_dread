@@ -50,27 +50,13 @@ class SceneMainMenu(Scene):
         self.menu_element_selected.set_alpha(self.element_opacity_selected)
 
 
-    def on_update(self):
-        pygame.mouse.set_visible(True)
-        if self.start:
-            self.start = False
-            try:
-                self.director.change_scene(self.director.scene_dict['scene_start'])
-            except Exception:
-                print 'Imposible cambiar de escena'
-        if self.game:
-            self.game = False
-            scene = SceneGame(self.director)
-            self.director.change_scene(scene)
-        self.check_menu()
-
-
     def on_event(self):
         for event in pygame.event.get():
             if event.type == MOUSEBUTTONDOWN:
                 if event.button == 1:
                     if self.menu_element_1_selected:
                         self.game = True
+
             if event.type == KEYDOWN:
                 if event.key == K_ESCAPE:
                     self.director.quit()
@@ -85,6 +71,21 @@ class SceneMainMenu(Scene):
                     else:
                         pygame.mixer.music.unpause()
                         self.director.music_flag = True
+
+
+    def on_update(self):
+        pygame.mouse.set_visible(True)
+        if self.start:
+            self.start = False
+            try:
+                self.director.change_scene(self.director.scene_dict['scene_start'])
+            except Exception:
+                print 'Imposible cambiar de escena'
+        if self.game:
+            self.game = False
+            scene = SceneGame(self.director)
+            self.director.change_scene(scene)
+        self.check_menu()
 
 
     def on_draw(self, screen):

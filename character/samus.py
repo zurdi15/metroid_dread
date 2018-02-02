@@ -14,9 +14,10 @@ from ammo import Shot
 
 
 class Samus(Character):
-
-    def __init__(self, px, py):
+    def __init__(self, posx, posy, scene):
         Character.__init__(self)
+        # Escena actual
+        self.scene = scene
         # Cargamos el sheet
         self.sheet = load_image(config.zero_suit_stand_sheet, True)
         # Definimos medidas
@@ -30,6 +31,7 @@ class Samus(Character):
         self.image = self.sheet.subsurface(self.sheet.get_clip())
         # Recogemos el rect de la imagen
         self.rect = self.image.get_rect()
+        self.rect.center = (posx, posy)
         # Establecemos el primer frame de la animacion a 0 (hay 4)
         self.frame = 0
         # Definimos cada estado con sus coordenadas
@@ -59,16 +61,12 @@ class Samus(Character):
         self.updated = pygame.time.get_ticks()
         # Variables de movimiento
         self.direction = 'right'
-        self.posx = px
-        self.posy = py
         self.dx = 0
         self.dy = 0
         self.speed = [10, 10]
         self.jump_force = 15
         self.jumping = True
         self.moving = False
-        self.gunx = self.posx
-        self.guny = self.posy + 15
         self.shot_list = []
         self.updated = pygame.time.get_ticks()
 
@@ -101,21 +99,19 @@ class Samus(Character):
             self.moving = True
             self.sheet = load_image(config.zero_suit_move_right_sheet, True)
             self.clip(self.right_move_states)
-            if self.posx <= config.screen_width-self.width_move:
+            if self.rect.right <= config.screen_width:
                 self.dx = self.speed[0]
             else:
                 self.dx = 0
-                self.posx = config.screen_width - self.width_move
         elif direction == 'left':
             self.direction = 'left'
             self.moving = True
             self.sheet = load_image(config.zero_suit_move_left_sheet, True)
             self.clip(self.left_move_states)
-            if self.posx >= 0:
+            if self.rect.left >= 0:
                 self.dx = -self.speed[0]
             else:
                 self.dx = 0
-                self.posx = 0
         elif direction == 'stand_right':
             self.direction = 'right'
             self.sheet = load_image(config.zero_suit_stand_sheet, True)
@@ -136,24 +132,25 @@ class Samus(Character):
 
 
     def shot(self):
-        shot = Shot(self.gunx, self.guny, self.direction)
+        if self.direction == 'right':
+            shot = Shot(self.rect.centerx+15, self.rect.centery-27, self.direction)
+        elif self.direction == 'left':
+            shot = Shot(self.rect.centerx-15, self.rect.centery-27, self.direction)
         self.shot_list.append(shot)
+        self.scene.sprites.add(shot)
 
 
     def update(self):
         self.calculate_gravity()
-        self.posx = self.posx + self.dx
-        self.posy = self.posy + self.dy
-        if self.direction == 'left':
-            self.gunx = self.posx
-            self.guny = self.posy + 15
-        elif self.direction == 'right':
-            self.gunx = self.posx + self.width_stand - 15
-            self.guny = self.posy + 15
-        if self.posy + self.rect.height > config.screen_height:
-            self.posy = config.screen_height - self.rect.height
+
+        self.rect.centerx = self.rect.centerx + self.dx
+        self.rect.centery = self.rect.centery + self.dy
+
+        if self.rect.bottom > config.screen_height:
+            self.rect.bottom = config.screen_height
             self.jumping = False
             self.dy = 0
+
         if self.updated + config.fps <= pygame.time.get_ticks():
             keys = pygame.key.get_pressed()
             if keys[K_d]:

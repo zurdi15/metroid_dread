@@ -10,7 +10,8 @@ import pygame
 
 class Character(pygame.sprite.Sprite):
     def __init__(self):
-        super(Character, self).__init__()
+        pygame.sprite.Sprite.__init__(self)
+        self.scene = None
         self.image = None
         self.rect = None
         self.dx = 0

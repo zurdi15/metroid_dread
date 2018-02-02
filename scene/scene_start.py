@@ -6,8 +6,8 @@
 # ---------------------------------------------------------------------
 import pygame
 from pygame.locals import *
-import moviepy
-from moviepy.editor import *
+from moviepy.editor import VideoFileClip
+from moviepy.editor import AudioFileClip
 from handler import config
 from scene import Scene
 from handler import graphics
@@ -21,17 +21,11 @@ class SceneStart(Scene):
     def __init__(self, director):
         Scene.__init__(self, director)
         self.name = 'scene_start'
+        pygame.mouse.set_visible(True)
         self.main_menu = False
         self.bg = graphics.load_image(config.bg_start_game)
-        #self.intro_init()
         self.music_init()
-
-
-    def on_update(self):
-        if self.main_menu:
-            self.main_menu = False
-            scene = SceneMainMenu(self.director)
-            self.director.change_scene(scene)
+        #self.intro_init()
 
 
     def on_event(self):
@@ -39,6 +33,7 @@ class SceneStart(Scene):
             if event.type == MOUSEBUTTONDOWN:
                 if event.button == 1:
                     self.main_menu = True
+
             if event.type == KEYDOWN:
                 if event.key == K_ESCAPE:
                     self.director.quit()
@@ -53,13 +48,24 @@ class SceneStart(Scene):
                         self.director.music_flag = True
 
 
+    def on_update(self):
+        if self.main_menu:
+            self.main_menu = False
+            scene = SceneMainMenu(self.director)
+            self.director.change_scene(scene)
+
+
     def on_draw(self, screen):
         screen.blit(self.bg, (0, 0))
 
 
     @staticmethod
     def intro_init():
-        VideoFileClip(config.intro_movie).preview()
+        pygame.mouse.set_visible(False)
+        movie = VideoFileClip(config.intro_movie)
+        audio = AudioFileClip(config.main_menu_audio)
+        movie = movie.set_audio(audio)
+        movie.preview()
 
 
     @staticmethod

@@ -22,26 +22,30 @@ class Director:
     def __init__(self):
         self.screen = pygame.display.set_mode((config.screen_width, config.screen_height))
         pygame.display.set_caption(config.name)
-        self.scene = None
-        self.scene_dict = {}
         self.clock = pygame.time.Clock()
         self.time = 0
+        self.scene = None
+        self.scene_dict = {}
         self.music_flag = True
-        self.quit_flag = False
+        self.running = True
 
 
     def loop(self):
         """Pone en funcionamiento el juego."""
-        while not self.quit_flag:
+        while self.running:
             self.time = self.clock.tick(config.fps)
+
             # Eventos
             for event in pygame.event.get(QUIT):
                 self.quit()
-            # detecta eventos
+
+            # Detecta eventos
             self.scene.on_event()
-            # actualiza la escena
+
+            # Actualiza la escena
             self.scene.on_update()
-            # dibuja la pantalla
+
+            # Dibuja la pantalla
             self.scene.on_draw(self.screen)
             pygame.display.update()
 
@@ -53,4 +57,4 @@ class Director:
 
 
     def quit(self):
-        self.quit_flag = True
+        self.running = False
