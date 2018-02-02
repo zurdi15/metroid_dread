@@ -6,7 +6,7 @@
 # ---------------------------------------------------------------------
 import pygame
 from pygame.locals import *
-from handler import config
+from config import *
 from handler import graphics
 from scene import Scene
 from scene_game import SceneGame
@@ -22,32 +22,32 @@ class SceneMainMenu(Scene):
         self.name = 'scene_main_menu'
         self.start_flag = False
         self.game_flag = False
-        self.bg = graphics.load_image(config.bg_main_menu)
+        self.bg = graphics.load_image(BG_MAIN_MENU)
         self.element_opacity = 170
         self.element_opacity_selected = 100
         # Element 1
-        self.menu_element_1 = graphics.load_image(config.element_main_menu, True)
+        self.menu_element_1 = graphics.load_image(ELEMENT_MAIN_MENU, True)
         self.menu_element_1_rect = self.menu_element_1.get_rect()
-        self.menu_element_1_rect.centerx = config.screen_width/2
-        self.menu_element_1_rect.centery = config.screen_height/4
+        self.menu_element_1_rect.centerx = SCREEN_WIDTH / 2
+        self.menu_element_1_rect.centery = SCREEN_HEIGHT / 4
         self.menu_element_1.set_alpha(self.element_opacity)
         self.menu_element_1_selected = False
         # Element 2
-        self.menu_element_2 = graphics.load_image(config.element_main_menu, True)
+        self.menu_element_2 = graphics.load_image(ELEMENT_MAIN_MENU, True)
         self.menu_element_2_rect = self.menu_element_2.get_rect()
-        self.menu_element_2_rect.centerx = config.screen_width/2
-        self.menu_element_2_rect.centery = config.screen_height/4*2
+        self.menu_element_2_rect.centerx = SCREEN_WIDTH / 2
+        self.menu_element_2_rect.centery = SCREEN_HEIGHT / 4 * 2
         self.menu_element_2.set_alpha(self.element_opacity)
         self.menu_element_2_selected = False
         # Element 3
-        self.menu_element_3 = graphics.load_image(config.element_main_menu, True)
+        self.menu_element_3 = graphics.load_image(ELEMENT_MAIN_MENU, True)
         self.menu_element_3_rect = self.menu_element_3.get_rect()
-        self.menu_element_3_rect.centerx = config.screen_width/2
-        self.menu_element_3_rect.centery = config.screen_height/4*3
+        self.menu_element_3_rect.centerx = SCREEN_WIDTH / 2
+        self.menu_element_3_rect.centery = SCREEN_HEIGHT / 4 * 3
         self.menu_element_3.set_alpha(self.element_opacity)
         self.menu_element_3_selected = False
         # Element selected
-        self.menu_element_selected = graphics.load_image(config.element_main_menu_selected, True)
+        self.menu_element_selected = graphics.load_image(ELEMENT_MAIN_MENU_SELECTED, True)
         self.menu_element_selected.set_alpha(self.element_opacity_selected)
 
 

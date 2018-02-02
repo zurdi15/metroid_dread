@@ -6,7 +6,9 @@
 import pygame
 from pygame.locals import *
 from handler import graphics
-from handler import config
+import config
+
+
 # ---------------------------------------------------------------------
 
 class Kate(pygame.sprite.Sprite):
@@ -14,7 +16,7 @@ class Kate(pygame.sprite.Sprite):
         pygame.sprite.Sprite.__init__(self)
 
         # Cargamos el sheet
-        self.sheet = graphics.load_image(config.test_sprites_kate, True)
+        self.sheet = graphics.load_image(config.TEST_SPRITES_KATE, True)
 
         # Definimos medidas
         self.width = 52
@@ -73,7 +75,7 @@ class Kate(pygame.sprite.Sprite):
                 self.rect.x -= self.speed[0] * time
         if direction == 'right':
             self.clip(self.right_states)
-            if self.rect.x <= config.screen_width-self.width:
+            if self.rect.x <= config.SCREEN_WIDTH-self.width:
                 self.rect.x += self.speed[0] * time
         if direction == 'up':
             self.clip(self.up_states)
@@ -81,7 +83,7 @@ class Kate(pygame.sprite.Sprite):
                 self.rect.y -= self.speed[1] * time
         if direction == 'down':
             self.clip(self.down_states)
-            if self.rect.y <= config.screen_height-self.height:
+            if self.rect.y <= config.SCREEN_HEIGHT-self.height:
                 self.rect.y += self.speed[1] * time
 
         # Si no es una animacion, pasamos el primer sprite del diccionario con las coordenadas de la animacion
@@ -98,8 +100,8 @@ class Kate(pygame.sprite.Sprite):
 
 
     def calculate_gravity(self):
-        if self.rect.y <= config.screen_height:
-            self.rect.y = self.rect.y + config.gravity
+        if self.rect.y <= config.SCREEN_HEIGHT:
+            self.rect.y = self.rect.y + config.GRAVITY
 
 
     def jump(self, jump_force):
@@ -109,12 +111,12 @@ class Kate(pygame.sprite.Sprite):
     # Manejador de eventos
     def update(self, time):
         self.calculate_gravity()
-        if self.rect.y + self.height > config.screen_height:
-            self.rect.y = config.screen_height - self.height
+        if self.rect.y + self.height > config.SCREEN_HEIGHT:
+            self.rect.y = config.SCREEN_HEIGHT - self.height
             self.jumping = False
 
         # Eventos continuos
-        if self.updated + config.fps <= pygame.time.get_ticks():
+        if self.updated + config.FPS <= pygame.time.get_ticks():
             keys = pygame.key.get_pressed()
             if keys[K_LEFT]:
                 self.move('left', time)

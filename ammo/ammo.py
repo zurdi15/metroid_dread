@@ -1,25 +1,22 @@
-#!/usr/python
+#!/usr/bin/python
 # -*- coding: utf-8 -*-
 
 
 # Modules
 # ---------------------------------------------------------------------
 import pygame as pg
-vec = pg.math.Vector2
 # ---------------------------------------------------------------------
 
 
-class Character(pg.sprite.Sprite):
+class Ammo(pg.sprite.Sprite):
     def __init__(self):
         pg.sprite.Sprite.__init__(self)
         self.scene = None
         self.image = None
         self.rect = None
-        self.pos = vec(0, 0)
-        self.vel = vec(0, 0)
-        self.acc = vec(0, 0)
-        self.jumping = False
-
+        self.pos = None
+        self.direction = ''
+        self.speed = 0
 
     def update(self):
         raise NotImplementedError("The update method must be called in any child class")

@@ -4,9 +4,9 @@
 
 # Modules
 # ---------------------------------------------------------------------
-import pygame
+import pygame as pg
 from pygame.locals import *
-from handler import config
+from config import *
 # ---------------------------------------------------------------------
 
 
@@ -20,9 +20,9 @@ class Director:
     derivados de Scene."""
 
     def __init__(self):
-        self.screen = pygame.display.set_mode((config.screen_width, config.screen_height))
-        pygame.display.set_caption(config.name)
-        self.clock = pygame.time.Clock()
+        self.screen = pg.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT))
+        pg.display.set_caption(TITLE)
+        self.clock = pg.time.Clock()
         self.time = 0
         self.scene = None
         self.scene_dict = {}
@@ -33,10 +33,10 @@ class Director:
     def loop(self):
         """Pone en funcionamiento el juego."""
         while self.running:
-            self.time = self.clock.tick(config.fps)
+            self.time = self.clock.tick(FPS)
 
             # Eventos
-            for event in pygame.event.get(QUIT):
+            for event in pg.event.get(QUIT):
                 self.quit()
 
             # Detecta eventos
@@ -47,7 +47,7 @@ class Director:
 
             # Dibuja la pantalla
             self.scene.on_draw(self.screen)
-            pygame.display.update()
+            pg.display.update()
 
 
     def change_scene(self, scene):

@@ -4,10 +4,10 @@
 
 # Modules
 # ---------------------------------------------------------------------
-import pygame
-from pygame.locals import *
+import pygame as pg
+vec = pg.math.Vector2
 from handler.graphics import load_image
-from handler import config
+from config import *
 from character import Character
 from ammo import Shot
 # ---------------------------------------------------------------------
@@ -19,14 +19,14 @@ class Samus(Character):
         # Escena actual
         self.scene = scene
         # Cargamos el sheet
-        self.sheet = load_image(config.zero_suit_stand_sheet, True)
+        self.sheet = load_image(ZERO_SUIT_STAND_SHEET, True)
         # Definimos medidas
         self.width_stand = 69
         self.height_stand = 108
         self.width_move = 105
         self.height_move = 118
         # Definimos el tamaño de cada clip del sheet
-        self.sheet.set_clip(pygame.Rect(self.width_stand, 0, self.width_stand, self.height_stand))
+        self.sheet.set_clip(pg.Rect(self.width_stand, 0, self.width_stand, self.height_stand))
         # Recogemos la imagen inicial del sheet
         self.image = self.sheet.subsurface(self.sheet.get_clip())
         # Recogemos el rect de la imagen
@@ -58,25 +58,17 @@ class Samus(Character):
                                  8: (self.width_move, 0, self.width_move, self.height_move),
                                  9: (0, 0, self.width_move, self.height_move), }
         # Definimos el delay de la animacion
-        self.updated = pygame.time.get_ticks()
+        self.updated = pg.time.get_ticks()
         self.anim_delay = 60
         # Variables de movimiento
-        self.direction = 'right'
-        self.dx = 0
-        self.dy = 0
-        self.speed = [10, 10]
-        self.jump_force = 15
-        self.jumping = True
+        self.direction = 'stand_right'
+        self.pos = vec(posx, posy)
+        self.gun_offset = vec(25, -27)
+        self.vel = vec(0, 0)
+        self.acc = vec(0, 0)
+        self.jumping = False
         self.moving = False
         self.shot_list = []
-        self.updated = pygame.time.get_ticks()
-
-
-    def calculate_gravity(self):
-        if self.dy == 0:
-            self.dy = 1
-        else:
-            self.dy = self.dy + config.gravity
 
 
     # Funcion para recoger el sprite marcado por self.frame
@@ -89,59 +81,38 @@ class Samus(Character):
 
     def clip(self, clipped_rect):
         if type(clipped_rect) is dict:
-            self.sheet.set_clip(pygame.Rect(self.get_frame(clipped_rect)))
+            self.sheet.set_clip(pg.Rect(self.get_frame(clipped_rect)))
         else:
-            self.sheet.set_clip(pygame.Rect(clipped_rect))
+            self.sheet.set_clip(pg.Rect(clipped_rect))
 
 
-    def move(self, direction):
-        if direction == 'right':
-            self.direction = 'right'
-            self.moving = True
-            if self.rect.right <= config.screen_width:
-                self.dx = self.speed[0]
-            else:
-                self.dx = 0
-        elif direction == 'left':
-            self.direction = 'left'
-            self.moving = True
-            if self.rect.left >= 0:
-                self.dx = -self.speed[0]
-            else:
-                self.dx = 0
-        elif direction == 'stand_right':
-            self.direction = 'right'
-            self.sheet = load_image(config.zero_suit_stand_sheet, True)
+    def animation(self):
+        if self.direction == 'right':
+            self.sheet = load_image(ZERO_SUIT_MOVE_RIGHT_SHEET, True)
+            self.clip(self.right_move_states)
+        elif self.direction == 'left':
+            self.sheet = load_image(ZERO_SUIT_MOVE_LEFT_SHEET, True)
+            self.clip(self.left_move_states)
+        elif self.direction == 'stand_right':
+            self.sheet = load_image(ZERO_SUIT_STAND_SHEET, True)
             self.clip(self.stand_states[0])
-            self.dx = 0
-        elif direction == 'stand_left':
-            self.direction = 'left'
-            self.sheet = load_image(config.zero_suit_stand_sheet, True)
+        elif self.direction == 'stand_left':
+            self.sheet = load_image(ZERO_SUIT_STAND_SHEET, True)
             self.clip(self.stand_states[1])
-            self.dx = 0
 
         self.image = self.sheet.subsurface(self.sheet.get_clip())
 
 
-    def animation(self, direction):
-        if direction == 'right':
-            self.sheet = load_image(config.zero_suit_move_right_sheet, True)
-            self.clip(self.right_move_states)
-        elif direction == 'left':
-            self.sheet = load_image(config.zero_suit_move_left_sheet, True)
-            self.clip(self.left_move_states)
-
     def jump(self):
         if not self.jumping:
-            self.impulse(self.dx, -self.jump_force)
-            self.jumping = True
+            self.vel.y = -SAMUS_JUMP
 
 
     def shot(self):
-        if self.direction == 'right':
-            shot = Shot(self.rect.centerx+15, self.rect.centery-27, self.direction)
-        elif self.direction == 'left':
-            shot = Shot(self.rect.centerx-15, self.rect.centery-27, self.direction)
+        if self.direction == 'right' or self.direction == 'stand_right':
+            shot = Shot(self.rect.centerx+self.gun_offset.x, self.rect.centery+self.gun_offset.y, self.direction, self.scene)
+        elif self.direction == 'left' or self.direction == 'stand_left':
+            shot = Shot(self.rect.centerx-self.gun_offset.x, self.rect.centery+self.gun_offset.y, self.direction, self.scene)
         else:
             shot = None
         self.shot_list.append(shot)
@@ -149,25 +120,25 @@ class Samus(Character):
 
 
     def update(self):
-        self.calculate_gravity()
+        self.acc = vec(0, GRAVITY)
 
-        self.rect.centerx = self.rect.centerx + self.dx
-        self.rect.centery = self.rect.centery + self.dy
+        keys = pg.key.get_pressed()
+        if keys[pg.K_d]:
+            self.acc.x = SAMUS_ACC
+            self.direction = 'right'
+        if keys[pg.K_a]:
+            self.acc.x = -SAMUS_ACC
+            self.direction = 'left'
 
-        if self.rect.bottom > config.screen_height:
-            self.rect.bottom = config.screen_height
-            self.jumping = False
-            self.dy = 0
+        if self.updated + self.anim_delay <= pg.time.get_ticks():
+            self.animation()
+            self.updated = pg.time.get_ticks()
+
+        # apply friction
+        self.acc.x += self.vel.x * SAMUS_FRIC
+        # equations of motion
+        self.vel += self.acc
+        self.pos += self.vel + 0.5 * self.acc
 
 
-        keys = pygame.key.get_pressed()
-        if keys[K_d]:
-            self.move('right')
-            if self.updated + self.anim_delay <= pygame.time.get_ticks():
-                self.animation('right')
-                self.updated = pygame.time.get_ticks()
-        elif keys[K_a]:
-            self.move('left')
-            if self.updated + self.anim_delay <= pygame.time.get_ticks():
-                self.animation('left')
-                self.updated = pygame.time.get_ticks()
+        self.rect.midbottom = self.pos

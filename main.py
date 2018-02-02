@@ -4,17 +4,17 @@
 
 # Modules
 # ---------------------------------------------------------------------
-import pygame
+import pygame as pg
 from handler import Director
 from scene import SceneStart, SceneMainMenu,SceneGame
 # ---------------------------------------------------------------------
 
 
 def main():
-    pygame.init()
-    #pygame.event.set_grab(True)
+    pg.init()
+    pg.event.set_grab(True)
     director = Director()
-    scene = SceneMainMenu(director)
+    scene = SceneGame(director)
     director.change_scene(scene)
     director.loop()
 

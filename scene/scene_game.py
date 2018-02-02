@@ -4,12 +4,13 @@
 
 # Modules
 # ---------------------------------------------------------------------
-import pygame
+import pygame as pg
 from pygame.locals import *
-from handler import config
+from config import *
 from handler import graphics
 from scene import Scene
 from character import Samus
+from map import Structure
 # ---------------------------------------------------------------------
 
 
@@ -18,13 +19,15 @@ class SceneGame(Scene):
     def __init__(self, director):
         """Escena del juego"""
         Scene.__init__(self, director)
-        pygame.mouse.set_visible(False)
+        pg.mouse.set_visible(False)
         self.name = 'scene_game'
         self.main_menu = False
-        self.screen_limit_x = (0, config.screen_width)
-        self.screen_limit_y = (0, config.screen_height)
-        self.sprites = pygame.sprite.Group()
-        self.samus = Samus(100, 100, self)
+        self.sprites = pg.sprite.Group()
+        self.structures = pg.sprite.Group()
+        self.ground = Structure(-200, SCREEN_HEIGHT - 40, SCREEN_WIDTH+200, 40, self)
+        self.sprites.add(self.ground)
+        self.structures.add(self.ground)
+        self.samus = Samus(SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2, self)
         self.sprites.add(self.samus)
         # Controls
         self.controls_left, self.controls_left_rect = graphics.load_text("left: A", 50, 30, size=15)
@@ -35,16 +38,10 @@ class SceneGame(Scene):
 
     def on_event(self):
         # Controla todas las teclas
-        for event in pygame.event.get():
+        for event in pg.event.get():
             if event.type == MOUSEBUTTONDOWN:
                 if event.button == 1:
                     self.samus.shot()
-
-            elif event.type == KEYUP:
-                if event.key == K_d:
-                    self.samus.move('stand_right')
-                elif event.key == K_a:
-                    self.samus.move('stand_left')
 
             elif event.type == KEYDOWN:
                 if event.key == K_ESCAPE:
@@ -55,14 +52,48 @@ class SceneGame(Scene):
                     self.samus.jump()
                 elif event.key == K_m:
                     if self.director.music_flag:
-                        pygame.mixer.music.pause()
+                        pg.mixer.music.pause()
                         self.director.music_flag = False
                     else:
-                        pygame.mixer.music.unpause()
+                        pg.mixer.music.unpause()
                         self.director.music_flag = True
+
+            elif event.type == KEYUP:
+                if event.key == K_a:
+                    self.samus.direction = 'stand_left'
+                if event.key == K_d:
+                    self.samus.direction = 'stand_right'
 
 
     def on_update(self):
+        self.sprites.update()
+
+        # check if player hits a platform - only if falling
+        if self.samus.vel.y > 0:
+            hits = pg.sprite.spritecollide(self.samus, self.structures, False)
+            if hits:
+                self.samus.pos.y = hits[0].rect.top
+                self.samus.vel.y = 0
+
+
+        # Running right
+        if self.samus.direction == 'right':
+            self.samus.pos.x -= self.samus.vel.x
+            self.ground.rect.x -= self.samus.vel.x
+            for shot in self.samus.shot_list:
+                shot.pos.x -= self.samus.vel.x
+                if shot.pos.x < -10 or shot.pos.x > SCREEN_WIDTH:
+                    shot.kill()
+
+        # Running left
+        if self.samus.direction == 'left':
+            self.samus.pos.x += self.samus.vel.x
+            self.ground.rect.x += abs(self.samus.vel.x)
+            for shot in self.samus.shot_list:
+                shot.pos.x += self.samus.vel.x
+
+
+        # Comprueba que vayamos al menu principal
         if self.main_menu:
             self.main_menu = False
             try:
@@ -70,21 +101,10 @@ class SceneGame(Scene):
             except Exception:
                 print 'Imposible cambiar de escena'
 
-        self.samus.update()
-
-        for shot in self.samus.shot_list:
-            if shot.rect.right <= self.screen_limit_x[0] or shot.rect.left >= self.screen_limit_x[1]:
-                self.samus.shot_list.remove(shot)
-            shot.update()
-
 
     def on_draw(self, screen):
-        screen.fill(config.black)
-        # r = pygame.Surface((self.samus.rect.width, self.samus.rect.height))
-        # r.fill((255, 255, 255))
-        # screen.blit(r, self.samus.rect)
+        screen.fill(BLACK)
         self.sprites.draw(screen)
-
         self.draw_controls(screen)
 
 

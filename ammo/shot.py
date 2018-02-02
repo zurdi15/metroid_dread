@@ -4,29 +4,29 @@
 
 # Modules
 # ---------------------------------------------------------------------
-import pygame
-from handler import config
+import pygame as pg
+vec = pg.math.Vector2
+from config import *
 from handler import graphics
+from ammo import Ammo
 # ---------------------------------------------------------------------
 
-class Shot(pygame.sprite.Sprite):
-    def __init__(self, posx, posy, direction):
-        pygame.sprite.Sprite.__init__(self)
-        self.image = graphics.load_image(config.shot, True)
+class Shot(Ammo):
+    def __init__(self, posx, posy, direction, scene):
+        Ammo.__init__(self)
+        self.scene = scene
+        self.image = graphics.load_image(SHOT, True)
         self.rect = self.image.get_rect()
-        self.rect.centerx = posx
-        self.rect.centery = posy
+        self.rect.center = (posx, posy)
+        self.pos = vec(posx, posy)
         self.direction = direction
         self.speed = 20
 
 
-    def set_pos(self, posx, posy):
-        self.rect.centerx = posx
-        self.rect.centery = posy
-
-
     def update(self):
-        if self.direction == 'right':
-            self.rect.centerx = self.rect.centerx + self.speed
-        elif self.direction == 'left':
-            self.rect.centerx = self.rect.centerx - self.speed
+        if self.direction == 'right' or self.direction == 'stand_right':
+            self.pos.x += self.speed
+        elif self.direction == 'left' or self.direction == 'stand_left':
+            self.pos.x -= self.speed
+
+        self.rect.center = self.pos
