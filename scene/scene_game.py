@@ -69,6 +69,7 @@ class SceneGame(Scene):
                 self.director.change_scene(self.director.scene_dict['scene_main_menu'])
             except Exception:
                 print 'Imposible cambiar de escena'
+
         self.samus.update()
 
         for shot in self.samus.shot_list:

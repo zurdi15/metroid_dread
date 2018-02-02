@@ -18,31 +18,32 @@ class SceneMainMenu(Scene):
 
     def __init__(self, director):
         Scene.__init__(self, director)
+        pygame.mouse.set_visible(True)
         self.name = 'scene_main_menu'
-        self.start = False
-        self.game = False
+        self.start_flag = False
+        self.game_flag = False
         self.bg = graphics.load_image(config.bg_main_menu)
         self.element_opacity = 170
         self.element_opacity_selected = 100
         # Element 1
         self.menu_element_1 = graphics.load_image(config.element_main_menu, True)
         self.menu_element_1_rect = self.menu_element_1.get_rect()
-        self.menu_element_1_rect.x = 50
-        self.menu_element_1_rect.y = config.screen_height / 4 - 105 / 2
+        self.menu_element_1_rect.centerx = config.screen_width/2
+        self.menu_element_1_rect.centery = config.screen_height/4
         self.menu_element_1.set_alpha(self.element_opacity)
         self.menu_element_1_selected = False
         # Element 2
         self.menu_element_2 = graphics.load_image(config.element_main_menu, True)
         self.menu_element_2_rect = self.menu_element_2.get_rect()
-        self.menu_element_2_rect.x = 50
-        self.menu_element_2_rect.y = config.screen_height / 4 * 2 - 105 / 2
+        self.menu_element_2_rect.centerx = config.screen_width/2
+        self.menu_element_2_rect.centery = config.screen_height/4*2
         self.menu_element_2.set_alpha(self.element_opacity)
         self.menu_element_2_selected = False
         # Element 3
         self.menu_element_3 = graphics.load_image(config.element_main_menu, True)
         self.menu_element_3_rect = self.menu_element_3.get_rect()
-        self.menu_element_3_rect.x = 50
-        self.menu_element_3_rect.y = config.screen_height / 4 * 3 - 105 / 2
+        self.menu_element_3_rect.centerx = config.screen_width/2
+        self.menu_element_3_rect.centery = config.screen_height/4*3
         self.menu_element_3.set_alpha(self.element_opacity)
         self.menu_element_3_selected = False
         # Element selected
@@ -55,15 +56,15 @@ class SceneMainMenu(Scene):
             if event.type == MOUSEBUTTONDOWN:
                 if event.button == 1:
                     if self.menu_element_1_selected:
-                        self.game = True
+                        self.game_flag = True
 
             if event.type == KEYDOWN:
                 if event.key == K_ESCAPE:
                     self.director.quit()
                 elif event.key == K_BACKSPACE:
-                    self.start = True
+                    self.start_flag = True
                 elif event.key == pygame.K_RETURN:
-                    self.game = True
+                    self.game_flag = True
                 elif event.key == pygame.K_m:
                     if self.director.music_flag:
                         pygame.mixer.music.pause()
@@ -74,15 +75,14 @@ class SceneMainMenu(Scene):
 
 
     def on_update(self):
-        pygame.mouse.set_visible(True)
-        if self.start:
-            self.start = False
+        if self.start_flag:
+            self.start_flag = False
             try:
                 self.director.change_scene(self.director.scene_dict['scene_start'])
             except Exception:
                 print 'Imposible cambiar de escena'
-        if self.game:
-            self.game = False
+        if self.game_flag:
+            self.game_flag = False
             scene = SceneGame(self.director)
             self.director.change_scene(scene)
         self.check_menu()

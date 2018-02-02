@@ -122,6 +122,8 @@ class Samus(Character):
             self.sheet = load_image(config.zero_suit_stand_sheet, True)
             self.clip(self.stand_states[1])
             self.dx = 0
+        else:
+            raise Exception
         self.image = self.sheet.subsurface(self.sheet.get_clip())
 
 
@@ -136,6 +138,8 @@ class Samus(Character):
             shot = Shot(self.rect.centerx+15, self.rect.centery-27, self.direction)
         elif self.direction == 'left':
             shot = Shot(self.rect.centerx-15, self.rect.centery-27, self.direction)
+        else:
+            shot = None
         self.shot_list.append(shot)
         self.scene.sprites.add(shot)
 
