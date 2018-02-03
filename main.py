@@ -12,9 +12,9 @@ from scene import SceneStart, SceneMainMenu,SceneGame
 
 def main():
     pg.init()
-    pg.event.set_grab(True)
+    #pg.event.set_grab(True)
     director = Director()
-    scene = SceneStart(director)
+    scene = SceneGame(director)
     director.change_scene(scene)
     director.loop()
 

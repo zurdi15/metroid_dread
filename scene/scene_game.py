@@ -22,13 +22,11 @@ class SceneGame(Scene):
         pg.mouse.set_visible(False)
         self.name = 'scene_game'
         self.main_menu = False
+        # Game elements
         self.sprites = pg.sprite.Group()
         self.structures = pg.sprite.Group()
-        self.ground = Structure(-200, SCREEN_HEIGHT - 40, SCREEN_WIDTH+200, 40, self)
-        self.sprites.add(self.ground)
-        self.structures.add(self.ground)
-        self.samus = Samus(SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2, self)
-        self.sprites.add(self.samus)
+        self.generate_structures()
+        self.generate_samus()
         # Controls
         self.controls_left, self.controls_left_rect = graphics.load_text("left: A", 50, 30, size=15)
         self.controls_left_rect.left = 30
@@ -38,6 +36,7 @@ class SceneGame(Scene):
         self.controls_jump_rect.left = 30
         self.controls_shot, self.controls_shot_rect = graphics.load_text("shot: mouse_1", 50, 120, size=15)
         self.controls_shot_rect.left = 30
+        #self.set_music()
 
 
     def on_event(self):
@@ -79,23 +78,10 @@ class SceneGame(Scene):
                 self.samus.pos.y = hits[0].rect.top
                 self.samus.vel.y = 0
 
-        print self.samus.vel.x
-        # Running right - moving camera
-        if self.samus.direction == 'right':
-            self.samus.pos.x -= self.samus.vel.x
-            self.ground.rect.x -= self.samus.vel.x
-            for shot in self.samus.shot_list:
-                shot.pos.x -= self.samus.vel.x
-                if shot.pos.x < -10 or shot.pos.x > SCREEN_WIDTH:
-                    shot.kill()
-
-        # Running left - moving camera
-        if self.samus.direction == 'left':
-            self.samus.pos.x -= self.samus.vel.x
-            self.ground.rect.x += abs(self.samus.vel.x)
-            for shot in self.samus.shot_list:
-                shot.pos.x += self.samus.vel.x
-
+        # Moving camera
+        self.samus.pos.x -= self.samus.vel.x
+        for struc in self.structures:
+            struc.rect.x -= int(self.samus.vel.x)
 
         # Comprueba que vayamos al menu principal
         if self.main_menu:
@@ -124,3 +110,27 @@ class SceneGame(Scene):
         r = pg.Surface((self.samus.rect.width, self.samus.rect.height))
         r.fill((255, 255, 255))
         screen.blit(r, self.samus.rect)
+
+
+    def generate_samus(self):
+        self.samus = Samus(SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2, self)
+        self.sprites.add(self.samus)
+
+    def generate_structures(self):
+        self.ground = Structure(SCREEN_WIDTH/2, SCREEN_HEIGHT/2, 100, 15, self)
+        self.sprites.add(self.ground)
+        self.structures.add(self.ground)
+        self.platform_1 = Structure(-200, SCREEN_HEIGHT - 40, SCREEN_WIDTH + 200, 40, self)
+        self.sprites.add(self.platform_1)
+        self.structures.add(self.platform_1)
+
+
+    @staticmethod
+    def set_music():
+        pg.mixer.stop()
+
+        # pg.mixer.music.load(APPEAR_JINGLE)
+        # pg.mixer.music.play()
+        #
+        pg.mixer.music.load(AREA_1_MUSIC)
+        pg.mixer.music.play(-1)

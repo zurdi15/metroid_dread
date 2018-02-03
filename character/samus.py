@@ -140,5 +140,4 @@ class Samus(Character):
         self.vel += self.acc
         self.pos += self.vel + 0.5 * self.acc
 
-
         self.rect.midbottom = self.pos

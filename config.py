@@ -27,8 +27,8 @@ os.environ['SDL_VIDEO_CENTERED'] = '1'
 GRAVITY = 0.98
 
 # Samus
-SAMUS_ACC = 0.8
-SAMUS_JUMP = 20
+SAMUS_ACC = 0.9
+SAMUS_JUMP = 22
 SAMUS_FRIC = -0.2
 
 # Colors
@@ -59,6 +59,8 @@ SHOT = AMMO + '/shot.png'
 # Audio
 AUDIO = 'resources/audio'
 MAIN_MENU_AUDIO = AUDIO + '/music_menu.ogg'
+APPEAR_JINGLE = AUDIO +'/appear_jingle.ogg'
+AREA_1_MUSIC = AUDIO+'/area_1_music.ogg'
 
 # Video
 VIDEO = 'resources/video'
