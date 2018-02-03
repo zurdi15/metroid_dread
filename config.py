@@ -72,6 +72,7 @@ AREA_1_MUSIC = AUDIO+'/area_1_music.ogg'
 # Video
 VIDEO = 'resources/video'
 INTRO_MOVIE = VIDEO + '/intro_movie.mp4'
+START_VIDEO = VIDEO + '/start_video.mp4'
 
 # Fonts
 FONTS = 'resources/fonts'

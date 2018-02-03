@@ -21,10 +21,10 @@ def load_image(filename, transparent=False):
     return image
 
 
-def load_text(text, posx, posy, color=WHITE, size=45):
+def load_text(screen, text, posx, posy, color=WHITE, size=45):
     source = pg.font.Font(DROID_SANS, size)
     text_image = pg.font.Font.render(source, text, 1, color)
     text_image_rect = text_image.get_rect()
-    text_image_rect.centerx = posx
-    text_image_rect.centery = posy
-    return text_image, text_image_rect
+    text_image_rect.x = posx
+    text_image_rect.y = posy
+    screen.blit(text_image, text_image_rect)

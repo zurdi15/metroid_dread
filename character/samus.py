@@ -131,8 +131,6 @@ class Samus(Character):
             self.ammo_type = 'plasma'
         elif self.ammo_type == 'plasma':
             self.ammo_type = 'normal'
-        self.scene.ammo_type, self.scene.ammo_type_rect = load_text("ammo: "+self.ammo_type, 50, 30, size=15)
-        self.scene.ammo_type_rect.right = SCREEN_WIDTH - 30
 
 
     def update(self):

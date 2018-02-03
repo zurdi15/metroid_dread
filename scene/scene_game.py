@@ -31,19 +31,6 @@ class SceneGame(Scene):
         self.generate_samus()
         self.generate_structures()
         self.generate_mobs()
-        # UI
-        self.controls_left, self.controls_left_rect = graphics.load_text("left: A", 50, 30, size=15)
-        self.controls_left_rect.left = 30
-        self.controls_right, self.controls_right_rect = graphics.load_text("right: D", 50, 60, size=15)
-        self.controls_right_rect.left = 30
-        self.controls_jump, self.controls_jump_rect = graphics.load_text("jump: space", 50, 90, size=15)
-        self.controls_jump_rect.left = 30
-        self.controls_shot, self.controls_shot_rect = graphics.load_text("shot: mouse_1", 50, 120, size=15)
-        self.controls_shot_rect.left = 30
-        self.ammo_type, self.ammo_type_rect = graphics.load_text("ammo: "+self.samus.ammo_type, 50, 30, size=15)
-        self.ammo_type_rect.right = SCREEN_WIDTH - 30
-        self.lifes, self.lifes_rect = graphics.load_text("lifes: "+str(self.samus.lifes), 50, 50, size=15)
-        self.lifes_rect.right = SCREEN_WIDTH - 30
 
 
 # Events
@@ -120,8 +107,6 @@ class SceneGame(Scene):
             hits = pg.sprite.spritecollide(self.samus, self.mobs, False, pg.sprite.collide_circle)
             for hit in hits:
                 self.samus.lifes -= 1
-                self.lifes, self.lifes_rect = graphics.load_text("lifes: " + str(self.samus.lifes), 50, 50, size=15)
-                self.lifes_rect.right = SCREEN_WIDTH - 30
                 self.samus.invulnerable = True
 
         # - Moving camera
@@ -151,11 +136,11 @@ class SceneGame(Scene):
         screen.fill(BLACK)
 
         # - Circles collision
-        pg.draw.circle(screen, RED, self.samus.rect.center, self.samus.radius)
-        for mob in self.mobs:
-            pg.draw.circle(screen, RED, mob.rect.center, mob.radius)
-        for shot in self.samus.shots:
-            pg.draw.circle(screen, RED, shot.rect.center, shot.radius)
+        # pg.draw.circle(screen, RED, self.samus.rect.center, self.samus.radius)
+        # for mob in self.mobs:
+        #     pg.draw.circle(screen, RED, mob.rect.center, mob.radius)
+        # for shot in self.samus.shots:
+        #     pg.draw.circle(screen, RED, shot.rect.center, shot.radius)
 
         # - Inv samus
         if self.samus.invulnerable:
@@ -166,12 +151,12 @@ class SceneGame(Scene):
         self.draw_UI(screen)
 
     def draw_UI(self, screen):
-        screen.blit(self.controls_left, self.controls_left_rect)
-        screen.blit(self.controls_right, self.controls_right_rect)
-        screen.blit(self.controls_jump, self.controls_jump_rect)
-        screen.blit(self.controls_shot, self.controls_shot_rect)
-        screen.blit(self.ammo_type, self.ammo_type_rect)
-        screen.blit(self.lifes, self.lifes_rect)
+        graphics.load_text(screen, "left: A", 50, 30, size=15)
+        graphics.load_text(screen, "right: D", 50, 60, size=15)
+        graphics.load_text(screen, "jump: space", 50, 90, size=15)
+        graphics.load_text(screen, "shot: mouse_1", 50, 120, size=15)
+        graphics.load_text(screen, "ammo: " + self.samus.ammo_type, SCREEN_WIDTH/2+50, SCREEN_HEIGHT/2, size=15)
+        graphics.load_text(screen, "lifes: " + str(self.samus.lifes), SCREEN_WIDTH/2+50, SCREEN_HEIGHT/2+20, size=15)
 # ----------------------------------------------------------------------------------------------------------------------
 
 
@@ -206,7 +191,7 @@ class SceneGame(Scene):
 
         # pg.mixer.music.load(APPEAR_JINGLE)
         # pg.mixer.music.play()
-        #
+
         pg.mixer.music.load(AREA_1_MUSIC)
         pg.mixer.music.play(-1)
 # ----------------------------------------------------------------------------------------------------------------------

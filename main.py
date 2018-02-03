@@ -6,13 +6,13 @@
 # ---------------------------------------------------------------------
 import pygame as pg
 from handler import Director
-from scene import SceneStart, SceneMainMenu,SceneGame
+from scene import SceneStart, SceneMainMenu, SceneGame
 # ---------------------------------------------------------------------
 
 
 def main():
     pg.init()
-    #pg.event.set_grab(True)
+    pg.event.set_grab(True)
     director = Director()
     scene = SceneGame(director)
     director.change_scene(scene)

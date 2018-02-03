@@ -23,9 +23,8 @@ class SceneStart(Scene):
         self.name = 'scene_start'
         self.main_menu_FLAG = False
         self.bg = graphics.load_image(BG_START_GAME)
-        self.press_start, self.press_start_rect = graphics.load_text("Press start", SCREEN_WIDTH/2, SCREEN_HEIGHT/4*3)
-        self.music_init()
-        #self.intro_init()
+        #self.music_init()
+        self.intro_init()
         pg.mouse.set_visible(True)
         pg.mouse.set_pos(SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2)
 
@@ -59,7 +58,7 @@ class SceneStart(Scene):
 
     def on_draw(self, screen):
         screen.blit(self.bg, (0, 0))
-        screen.blit(self.press_start, self.press_start_rect)
+        graphics.load_text(screen, "Press start", SCREEN_WIDTH/3+70, SCREEN_HEIGHT/4*3, size=25)
 
 
     @staticmethod
