@@ -71,7 +71,7 @@ class Samus(Character):
         self.moving = False
         self.shots = pg.sprite.Group()
         # Propiedades
-        self.lifes = 2
+        self.lifes = 3
         self.invulnerable = False
         self.invulnerable_time_0 = self.updated
         self.invulnerable_time_1 = 4000 # 4 seconds
@@ -108,7 +108,6 @@ class Samus(Character):
             self.clip(self.stand_states[1])
 
         self.image = self.sheet.subsurface(self.sheet.get_clip())
-        self.rect = self.image.get_rect()
 
 
     def jump(self):

@@ -14,6 +14,7 @@ class Ammo(pg.sprite.Sprite):
         self.scene = None
         self.image = None
         self.rect = None
+        self.radius = 0
         self.pos = None
         self.direction = ''
         self.speed = 0

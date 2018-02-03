@@ -18,6 +18,7 @@ class Shot(Ammo):
         self.image = graphics.load_image(SHOT, True)
         self.rect = self.image.get_rect()
         self.rect.center = (posx, posy)
+        self.radius = self.rect.width/2
         self.pos = vec(posx, posy)
         self.direction = direction
         self.speed = 20
