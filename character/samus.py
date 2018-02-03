@@ -6,7 +6,7 @@
 # ---------------------------------------------------------------------
 import pygame as pg
 vec = pg.math.Vector2
-from handler.graphics import load_image
+from handler.graphics import *
 from config import *
 from character import Character
 from ammo import Shot
@@ -69,6 +69,7 @@ class Samus(Character):
         self.jumping = False
         self.moving = False
         self.shots = pg.sprite.Group()
+        self.ammo_type = 'normal'
 
 
     # Funcion para recoger el sprite marcado por self.frame
@@ -118,6 +119,15 @@ class Samus(Character):
             shot = None
         self.shots.add(shot)
         self.scene.sprites.add(shot)
+
+
+    def ammo_change(self):
+        if self.ammo_type == 'normal':
+            self.ammo_type = 'plasma'
+        elif self.ammo_type == 'plasma':
+            self.ammo_type = 'normal'
+        self.scene.ammo_type, self.scene.ammo_type_rect = load_text("ammo: "+self.ammo_type, 50, 30, size=15)
+        self.scene.ammo_type_rect.right = SCREEN_WIDTH - 30
 
 
     def update(self):

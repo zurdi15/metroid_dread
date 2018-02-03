@@ -39,6 +39,8 @@ class SceneGame(Scene):
         self.controls_jump_rect.left = 30
         self.controls_shot, self.controls_shot_rect = graphics.load_text("shot: mouse_1", 50, 120, size=15)
         self.controls_shot_rect.left = 30
+        self.ammo_type, self.ammo_type_rect = graphics.load_text("ammo: "+self.samus.ammo_type, 50, 30, size=15)
+        self.ammo_type_rect.right = SCREEN_WIDTH - 30
         #self.set_music()
 
 
@@ -58,6 +60,8 @@ class SceneGame(Scene):
                     self.main_menu = True
                 elif event.key == K_SPACE:
                     self.samus.jump()
+                elif event.key == K_e:
+                    self.samus.ammo_change()
                 elif event.key == K_m:
                     if self.director.music_flag:
                         pg.mixer.music.pause()
@@ -78,7 +82,7 @@ class SceneGame(Scene):
 # ----------------------------------------------------------------------------------------------------------------------
     def on_update(self):
         self.sprites.update()
-
+        print len(self.samus.shots)
         # Colissions
         # Ground
         if self.samus.vel.y > 0:
@@ -87,11 +91,18 @@ class SceneGame(Scene):
                 self.samus.pos.y = hits[0].rect.top
                 self.samus.vel.y = 0
 
-        hits = pg.sprite.groupcollide(self.mobs, self.samus.shots, True, True)
-        for hit in hits:
-            m = Mob()
-            self.sprites.add(m)
-            self.mobs.add(m)
+        if self.samus.ammo_type == 'normal':
+            hits = pg.sprite.groupcollide(self.mobs, self.samus.shots, True, True)
+            for hit in hits:
+                m = Mob()
+                self.sprites.add(m)
+                self.mobs.add(m)
+        elif self.samus.ammo_type == 'plasma':
+            hits = pg.sprite.groupcollide(self.mobs, self.samus.shots, True, False)
+            for hit in hits:
+                m = Mob()
+                self.sprites.add(m)
+                self.mobs.add(m)
 
         # Moving camera
         self.samus.pos.x -= self.samus.vel.x
@@ -124,6 +135,8 @@ class SceneGame(Scene):
         screen.blit(self.controls_right, self.controls_right_rect)
         screen.blit(self.controls_jump, self.controls_jump_rect)
         screen.blit(self.controls_shot, self.controls_shot_rect)
+        screen.blit(self.ammo_type, self.ammo_type_rect)
+
 
 
     def draw_samus_rect(self, screen):

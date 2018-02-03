@@ -29,4 +29,7 @@ class Shot(Ammo):
         elif self.direction == 'left' or self.direction == 'stand_left':
             self.pos.x -= self.speed
 
+        if self.pos.x < 0 or self.pos.x > SCREEN_WIDTH:
+            self.kill()
+
         self.rect.center = self.pos
