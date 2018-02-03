@@ -20,7 +20,7 @@ TITLE = 'Metroid: Dread'
 SCREEN_WIDTH = 800#1366
 SCREEN_HEIGHT = 480#768
 FPS = 60
-os.environ['SDL_VIDEO_CENTERED'] = '1'
+#os.environ['SDL_VIDEO_CENTERED'] = '1'
 
 # Parameters
 # Enviroment
@@ -33,12 +33,14 @@ GRAVITY = 0.98
 # Samus
 SAMUS_ACC = 0.9
 SAMUS_JUMP = 22
-SAMUS_FRIC = -0.2
+SAMUS_FRIC = -0.12
 
 # Colors
 BLACK = (0, 0, 0)
 WHITE = (255, 255, 255)
 RED = (255, 0, 0)
+BLUE = (0, 0, 255)
+GREEN = (0, 255, 0)
 
 # Directories
 # Start game

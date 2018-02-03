@@ -31,7 +31,7 @@ class Samus(Character):
         self.image = self.sheet.subsurface(self.sheet.get_clip())
         # Recogemos el rect de la imagen
         self.rect = self.image.get_rect()
-        self.rect.center = (posx, posy)
+        self.radius = 35
         # Establecemos el primer frame de la animacion a 0 (hay 4)
         self.frame = 0
         # Definimos cada estado con sus coordenadas
@@ -57,9 +57,10 @@ class Samus(Character):
                                  7: (self.width_move * 2, 0, self.width_move, self.height_move),
                                  8: (self.width_move, 0, self.width_move, self.height_move),
                                  9: (0, 0, self.width_move, self.height_move), }
-        # Definimos el delay de la animacion
         self.updated = pg.time.get_ticks()
-        self.anim_delay = 60
+        # Definimos el delay de la animacion
+        self.anim_delay_0 = self.updated
+        self.anim_delay_1 = FPS
         # Variables de movimiento
         self.direction = 'stand_right'
         self.pos = vec(posx, posy)
@@ -69,6 +70,11 @@ class Samus(Character):
         self.jumping = False
         self.moving = False
         self.shots = pg.sprite.Group()
+        # Propiedades
+        self.lifes = 2
+        self.invulnerable = False
+        self.invulnerable_time_0 = self.updated
+        self.invulnerable_time_1 = 4000 # 4 seconds
         self.ammo_type = 'normal'
 
 
@@ -131,12 +137,24 @@ class Samus(Character):
 
 
     def update(self):
+        # - Calculate gravity
         self.acc = vec(0, GRAVITY)
         if self.vel.y != 0.0:
             self.jumping = True
         else:
             self.jumping = False
 
+        # - Calculate animation time
+        if self.anim_delay_0 + self.anim_delay_1 <= pg.time.get_ticks():
+            self.animation()
+            self.anim_delay_0 = pg.time.get_ticks()
+
+        # - Calculate invulnerable time
+        if self.invulnerable_time_0 + self.invulnerable_time_1 <= pg.time.get_ticks():
+            self.invulnerable = False
+            self.invulnerable_time_0 = pg.time.get_ticks()
+
+        # -- Check moving
         keys = pg.key.get_pressed()
         if keys[pg.K_d]:
             self.acc.x = SAMUS_ACC
@@ -145,14 +163,12 @@ class Samus(Character):
             self.acc.x = -SAMUS_ACC
             self.direction = 'left'
 
-        if self.updated + self.anim_delay <= pg.time.get_ticks():
-            self.animation()
-            self.updated = pg.time.get_ticks()
-
-        # apply friction
+        # - Apply friction
         self.acc.x += self.vel.x * SAMUS_FRIC
-        # equations of motion
+
+        # - Apply equations of motion
         self.vel += self.acc
         self.pos += self.vel + 0.5 * self.acc
 
+        # - Update position
         self.rect.midbottom = self.pos

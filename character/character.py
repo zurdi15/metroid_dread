@@ -15,6 +15,7 @@ class Character(pg.sprite.Sprite):
         self.scene = None
         self.image = None
         self.rect = None
+        self.radius = 0
         self.pos = vec(0, 0)
         self.vel = vec(0, 0)
         self.acc = vec(0, 0)

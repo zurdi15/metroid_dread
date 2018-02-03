@@ -15,12 +15,13 @@ class Mob(Character):
     def __init__(self):
         Character.__init__(self)
         self.image = pg.Surface((30, 40))
-        self.image.fill(RED)
+        self.image.fill(GREEN)
         self.rect = self.image.get_rect()
         self.rect.x = random.randrange(SCREEN_WIDTH - self.rect.width)
         self.rect.y = random.randrange(-100, -40)
+        self.radius = 20
         self.speedy = random.randrange(1, 4)
-        self.speedx = random.randrange(-3, 3)
+        self.speedx = 0
 
 
     def update(self):
