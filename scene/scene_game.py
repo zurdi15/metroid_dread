@@ -7,7 +7,7 @@
 import pygame as pg
 from pygame.locals import *
 from config import *
-from handler import graphics
+from handler.graphics import *
 from scene import Scene
 from character import Samus
 from character import Mob
@@ -21,7 +21,7 @@ class SceneGame(Scene):
         """Escena del juego"""
         Scene.__init__(self, director)
         pg.mouse.set_visible(False)
-        self.set_music()
+        #self.set_music()
         self.name = 'scene_game'
         self.main_menu = False
         # Game elements
@@ -31,6 +31,7 @@ class SceneGame(Scene):
         self.generate_samus()
         self.generate_structures()
         self.generate_mobs()
+
 
 
 # Events
@@ -78,6 +79,12 @@ class SceneGame(Scene):
 # Updates
 # ----------------------------------------------------------------------------------------------------------------------
     def on_update(self):
+
+        # ------------- DEBUG SECTION -------------
+        if DEBUG:
+            pass
+        # ------------- DEBUG SECTION -------------
+
         self.sprites.update()
 
         # - Colissions
@@ -111,10 +118,15 @@ class SceneGame(Scene):
 
         # - Moving camera
         self.samus.pos.x -= self.samus.vel.x
+        self.samus.pos.y -= self.samus.vel.y
         for struc in self.structures:
             struc.rect.x -= int(self.samus.vel.x)
+
+            struc.rect.y -= int(self.samus.vel.y)
         for mob in self.mobs:
             mob.rect.x -= int(self.samus.vel.x)
+            mob.rect.y -= int(self.samus.vel.y)
+
 
         # Checking going main menu
         if self.main_menu:
@@ -135,12 +147,18 @@ class SceneGame(Scene):
     def on_draw(self, screen):
         screen.fill(BLACK)
 
-        # - Circles collision
-        # pg.draw.circle(screen, RED, self.samus.rect.center, self.samus.radius)
-        # for mob in self.mobs:
-        #     pg.draw.circle(screen, RED, mob.rect.center, mob.radius)
-        # for shot in self.samus.shots:
-        #     pg.draw.circle(screen, RED, shot.rect.center, shot.radius)
+        if DEBUG:
+        # ------------- DEBUG SECTION -------------
+            pg.draw.circle(screen, RED, self.samus.rect.center, self.samus.radius)
+            for mob in self.mobs:
+                pg.draw.circle(screen, RED, mob.rect.center, mob.radius)
+            for shot in self.samus.shots:
+                pg.draw.circle(screen, RED, shot.rect.center, shot.radius)
+
+            load_text(screen, "pos: " + str(self.samus.pos), SCREEN_WIDTH-200, 30, size=15)
+            load_text(screen, "vel: " + str(self.samus.vel), SCREEN_WIDTH-200, 50, size=15)
+            load_text(screen, "acc: " + str(self.samus.acc), SCREEN_WIDTH-200, 70, size=15)
+        # ------------- DEBUG SECTION -------------
 
         # - Inv samus
         if self.samus.invulnerable:
@@ -151,19 +169,19 @@ class SceneGame(Scene):
         self.draw_UI(screen)
 
     def draw_UI(self, screen):
-        graphics.load_text(screen, "left: A", 50, 30, size=15)
-        graphics.load_text(screen, "right: D", 50, 60, size=15)
-        graphics.load_text(screen, "jump: space", 50, 90, size=15)
-        graphics.load_text(screen, "shot: mouse_1", 50, 120, size=15)
-        graphics.load_text(screen, "ammo: " + self.samus.ammo_type, SCREEN_WIDTH/2+50, SCREEN_HEIGHT/2, size=15)
-        graphics.load_text(screen, "lifes: " + str(self.samus.lifes), SCREEN_WIDTH/2+50, SCREEN_HEIGHT/2+20, size=15)
+        load_text(screen, "left: A", 50, 30, size=15)
+        load_text(screen, "right: D", 50, 60, size=15)
+        load_text(screen, "jump: space", 50, 90, size=15)
+        load_text(screen, "shot: mouse_1", 50, 120, size=15)
+        load_text(screen, "ammo: " + self.samus.ammo_type, self.samus.rect.right, self.samus.rect.y-20, size=15)
+        load_text(screen, "lifes: " + str(self.samus.lifes), self.samus.rect.right, self.samus.rect.y, size=15)
 # ----------------------------------------------------------------------------------------------------------------------
 
 
 # Generators
 # ----------------------------------------------------------------------------------------------------------------------
     def generate_samus(self):
-        self.samus = Samus(SCREEN_WIDTH / 2+40, SCREEN_HEIGHT / 2, self)
+        self.samus = Samus(SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2, self)
         self.sprites.add(self.samus)
 
     def generate_structures(self):

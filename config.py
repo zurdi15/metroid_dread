@@ -79,5 +79,6 @@ FONTS = 'resources/fonts'
 DROID_SANS = FONTS + '/droid_sans.ttf'
 
 # TEST
+DEBUG = True
 TEST_BG = 'resources/test/test_bg.png'
 TEST_SPRITES_KATE = 'resources/test/test_sprites_kate.png'

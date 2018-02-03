@@ -31,6 +31,8 @@ class Samus(Character):
         self.image = self.sheet.subsurface(self.sheet.get_clip())
         # Recogemos el rect de la imagen
         self.rect = self.image.get_rect()
+        self.rect.centerx = posx
+        self.rect.centery = posy
         self.radius = 35
         # Establecemos el primer frame de la animacion a 0 (hay 4)
         self.frame = 0
@@ -66,7 +68,7 @@ class Samus(Character):
         self.pos = vec(posx, posy)
         self.gun_offset = vec(25, -27)
         self.vel = vec(0, 0)
-        self.acc = vec(0, 0)
+        self.acc = vec(0.01, 0)
         self.jumping = False
         self.moving = False
         self.shots = pg.sprite.Group()
@@ -136,6 +138,7 @@ class Samus(Character):
     def update(self):
         # - Calculate gravity
         self.acc = vec(0, GRAVITY)
+
         if self.vel.y != 0.0:
             self.jumping = True
         else:
@@ -167,5 +170,4 @@ class Samus(Character):
         self.vel += self.acc
         self.pos += self.vel + 0.5 * self.acc
 
-        # - Update position
         self.rect.midbottom = self.pos
