@@ -10,6 +10,7 @@ from config import *
 from handler import graphics
 from scene import Scene
 from character import Samus
+from character import Mob
 from map import Structure
 # ---------------------------------------------------------------------
 
@@ -25,8 +26,10 @@ class SceneGame(Scene):
         # Game elements
         self.sprites = pg.sprite.Group()
         self.structures = pg.sprite.Group()
-        self.generate_structures()
+        self.mobs = pg.sprite.Group()
         self.generate_samus()
+        self.generate_structures()
+        self.generate_mobs()
         # Controls
         self.controls_left, self.controls_left_rect = graphics.load_text("left: A", 50, 30, size=15)
         self.controls_left_rect.left = 30
@@ -39,6 +42,8 @@ class SceneGame(Scene):
         #self.set_music()
 
 
+# Events
+# -----------------------------------------------------------------------------------------------------------------------
     def on_event(self):
         # Controla todas las teclas
         for event in pg.event.get():
@@ -66,22 +71,34 @@ class SceneGame(Scene):
                     self.samus.direction = 'stand_left'
                 if event.key == K_d:
                     self.samus.direction = 'stand_right'
+# ----------------------------------------------------------------------------------------------------------------------
 
 
+# Updates
+# ----------------------------------------------------------------------------------------------------------------------
     def on_update(self):
         self.sprites.update()
 
-        # check if player hits a platform - only if falling
+        # Colissions
+        # Ground
         if self.samus.vel.y > 0:
             hits = pg.sprite.spritecollide(self.samus, self.structures, False)
             if hits:
                 self.samus.pos.y = hits[0].rect.top
                 self.samus.vel.y = 0
 
+        hits = pg.sprite.groupcollide(self.mobs, self.samus.shots, True, True)
+        for hit in hits:
+            m = Mob()
+            self.sprites.add(m)
+            self.mobs.add(m)
+
         # Moving camera
         self.samus.pos.x -= self.samus.vel.x
         for struc in self.structures:
             struc.rect.x -= int(self.samus.vel.x)
+        for mob in self.mobs:
+            mob.rect.x -= int(self.samus.vel.x)
 
         # Comprueba que vayamos al menu principal
         if self.main_menu:
@@ -90,8 +107,11 @@ class SceneGame(Scene):
                 self.director.change_scene(self.director.scene_dict['scene_main_menu'])
             except Exception:
                 print 'Imposible cambiar de escena'
+# ----------------------------------------------------------------------------------------------------------------------
 
 
+# Drawing
+# ----------------------------------------------------------------------------------------------------------------------
     def on_draw(self, screen):
         screen.fill(BLACK)
         #self.draw_samus_rect(screen)
@@ -110,8 +130,11 @@ class SceneGame(Scene):
         r = pg.Surface((self.samus.rect.width, self.samus.rect.height))
         r.fill((255, 255, 255))
         screen.blit(r, self.samus.rect)
+# ----------------------------------------------------------------------------------------------------------------------
 
 
+# Generators
+# ----------------------------------------------------------------------------------------------------------------------
     def generate_samus(self):
         self.samus = Samus(SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2, self)
         self.sprites.add(self.samus)
@@ -124,7 +147,17 @@ class SceneGame(Scene):
         self.sprites.add(self.platform_1)
         self.structures.add(self.platform_1)
 
+    def generate_mobs(self):
+        for i in range(4):
+            m = Mob()
+            self.sprites.add(m)
+            self.mobs.add(m)
 
+# ----------------------------------------------------------------------------------------------------------------------
+
+
+# Music
+# ----------------------------------------------------------------------------------------------------------------------
     @staticmethod
     def set_music():
         pg.mixer.stop()
@@ -134,3 +167,4 @@ class SceneGame(Scene):
         #
         pg.mixer.music.load(AREA_1_MUSIC)
         pg.mixer.music.play(-1)
+# ----------------------------------------------------------------------------------------------------------------------

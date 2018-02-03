@@ -68,7 +68,7 @@ class Samus(Character):
         self.acc = vec(0, 0)
         self.jumping = False
         self.moving = False
-        self.shot_list = []
+        self.shots = pg.sprite.Group()
 
 
     # Funcion para recoger el sprite marcado por self.frame
@@ -101,6 +101,7 @@ class Samus(Character):
             self.clip(self.stand_states[1])
 
         self.image = self.sheet.subsurface(self.sheet.get_clip())
+        self.rect = self.image.get_rect()
 
 
     def jump(self):
@@ -115,12 +116,16 @@ class Samus(Character):
             shot = Shot(self.rect.centerx-self.gun_offset.x, self.rect.centery+self.gun_offset.y, self.direction, self.scene)
         else:
             shot = None
-        self.shot_list.append(shot)
+        self.shots.add(shot)
         self.scene.sprites.add(shot)
 
 
     def update(self):
         self.acc = vec(0, GRAVITY)
+        if self.vel.y != 0.0:
+            self.jumping = True
+        else:
+            self.jumping = False
 
         keys = pg.key.get_pressed()
         if keys[pg.K_d]:

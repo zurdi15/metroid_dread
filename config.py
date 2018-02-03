@@ -26,6 +26,10 @@ os.environ['SDL_VIDEO_CENTERED'] = '1'
 # Enviroment
 GRAVITY = 0.98
 
+
+#81x87
+
+
 # Samus
 SAMUS_ACC = 0.9
 SAMUS_JUMP = 22
@@ -34,6 +38,7 @@ SAMUS_FRIC = -0.2
 # Colors
 BLACK = (0, 0, 0)
 WHITE = (255, 255, 255)
+RED = (255, 0, 0)
 
 # Directories
 # Start game
