@@ -12,6 +12,8 @@ class Ammo(pg.sprite.Sprite):
     def __init__(self):
         pg.sprite.Sprite.__init__(self)
         self.scene = None
+        self.ammo_type = ''
+        self.direction = ''
         self.image = None
         self.rect = None
         self.radius = 0

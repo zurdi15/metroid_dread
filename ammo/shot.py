@@ -15,9 +15,10 @@ class Shot(Ammo):
     def __init__(self, posx, posy, direction, ammo_type, scene):
         Ammo.__init__(self)
         self.scene = scene
-        if ammo_type == 'normal':
+        self.ammo_type = ammo_type
+        if self.ammo_type == 'normal':
             self.image = graphics.load_image(SHOT, True)
-        elif ammo_type == 'plasma':
+        elif self.ammo_type == 'plasma':
             self.image = graphics.load_image(SHOT_PLASMA, True)
         self.rect = self.image.get_rect()
         self.rect.center = (posx, posy)
@@ -29,9 +30,16 @@ class Shot(Ammo):
 
     def update(self):
         if self.direction == 'right' or self.direction == 'stand_right':
+            self.image = pg.transform.flip(self.image, True, False)
             self.pos.x += self.speed
         elif self.direction == 'left' or self.direction == 'stand_left':
+            self.image = pg.transform.flip(self.image, True, False)
             self.pos.x -= self.speed
+
+        if self.ammo_type == 'normal':
+            self.radius = self.rect.width/2
+        elif self.ammo_type == 'plasma':
+            self.radius = self.rect.width / 3
 
         if self.pos.x < 0 or self.pos.x > SCREEN_WIDTH:
             self.kill()
