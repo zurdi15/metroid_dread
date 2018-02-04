@@ -27,6 +27,7 @@ class Director:
         self.scene = None
         self.scene_dict = {}
         self.music_flag = True
+        self.pause = False
         self.running = True
 
 
@@ -34,16 +35,21 @@ class Director:
         """Pone en funcionamiento el juego."""
         while self.running:
             self.time = self.clock.tick(FPS)
-            print len(self.scene_dict)
             # Eventos
             for event in pg.event.get(QUIT):
                 self.quit()
 
-            # Detecta eventos
-            self.scene.on_event()
+            if not self.pause:
+                # Detecta eventos
+                self.scene.on_event()
 
-            # Actualiza la escena
-            self.scene.on_update()
+                # Actualiza la escena
+                self.scene.on_update()
+            else:
+                for event in pg.event.get():
+                    if event.type == KEYDOWN:
+                        if event.key == K_ESCAPE:
+                            self.pause = False
 
             # Dibuja la pantalla
             self.scene.on_draw(self.screen)

@@ -19,6 +19,7 @@ class Ammo(pg.sprite.Sprite):
         self.radius = 0
         self.pos = None
         self.direction = ''
+        self.vertical_shot = False
         self.speed = 0
 
     def update(self):

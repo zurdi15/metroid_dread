@@ -50,7 +50,7 @@ class SceneGame(Scene):
             elif event.type == KEYDOWN:
                 # -- Check quiting
                 if event.key == K_ESCAPE:
-                    self.director.quit()
+                    self.director.pause = True
                 # -- Check going main menu
                 elif event.key == K_BACKSPACE:
                     self.main_menu = True
@@ -83,63 +83,63 @@ class SceneGame(Scene):
             pass
         # ------------- DEBUG SECTION -------------
 
-        self.sprites.update()
+        if not self.director.pause:
+            self.sprites.update()
 
-        # - Colissions
-        # -- Ground
-        if self.samus.vel.y > 0:
-            hits = pg.sprite.spritecollide(self.samus, self.structures, False)
-            if hits:
-                self.samus.pos.y = hits[0].rect.top
-                self.samus.vel.y = 0
+            # - Colissions
+            # -- Ground
+            if self.samus.vel.y > 0:
+                hits = pg.sprite.spritecollide(self.samus, self.structures, False)
+                if hits:
+                    self.samus.pos.y = hits[0].rect.top
+                    self.samus.vel.y = 0
 
-        # -- Shots
-        if self.samus.ammo_type == 'normal':
-            hits = pg.sprite.groupcollide(self.mobs, self.samus.shots, True, True)
-            for hit in hits:
-                m = Mob()
-                self.sprites.add(m)
-                self.mobs.add(m)
-        elif self.samus.ammo_type == 'plasma':
-            hits = pg.sprite.groupcollide(self.mobs, self.samus.shots, True, False)
-            for hit in hits:
-                m = Mob()
-                self.sprites.add(m)
-                self.mobs.add(m)
+            # -- Shots
+            if self.samus.ammo_type == 'normal':
+                hits = pg.sprite.groupcollide(self.mobs, self.samus.shots, True, True)
+                for hit in hits:
+                    m = Mob()
+                    self.sprites.add(m)
+                    self.mobs.add(m)
+            elif self.samus.ammo_type == 'plasma':
+                hits = pg.sprite.groupcollide(self.mobs, self.samus.shots, True, False)
+                for hit in hits:
+                    m = Mob()
+                    self.sprites.add(m)
+                    self.mobs.add(m)
 
-        # -- Mobs
-        if not self.samus.invulnerable:
-            hits = pg.sprite.spritecollide(self.samus, self.mobs, False, pg.sprite.collide_circle)
-            for hit in hits:
-                self.samus.tank_hp -= hit.damage
-                if self.samus.tank_hp <= 0:
-                    self.samus.tank_hp = 100
-                    self.samus.tanks -= 1
-                self.samus.invulnerable = True
+            # -- Mobs
+            if not self.samus.invulnerable:
+                hits = pg.sprite.spritecollide(self.samus, self.mobs, False, pg.sprite.collide_circle)
+                for hit in hits:
+                    self.samus.tank_hp -= hit.damage
+                    if self.samus.tank_hp <= 0:
+                        self.samus.tank_hp = 100
+                        self.samus.tanks -= 1
+                    self.samus.invulnerable = True
 
-        # - Moving camera
-        self.samus.pos.x -= self.samus.vel.x
-        #self.samus.pos.y -= self.samus.vel.y
-        for struc in self.structures:
-            struc.pos.x -= self.samus.vel.x
-            #struc.pos.y -= self.samus.vel.y
-        for mob in self.mobs:
-            mob.rect.x -= int(self.samus.vel.x)
-            #mob.rect.y -= int(self.samus.vel.y)
+            # - Moving camera
+            self.samus.pos.x -= self.samus.vel.x
+            #self.samus.pos.y -= self.samus.vel.y
+            for struc in self.structures:
+                struc.pos.x -= self.samus.vel.x
+                #struc.pos.y -= self.samus.vel.y
+            for mob in self.mobs:
+                mob.rect.x -= int(self.samus.vel.x)
+                #mob.rect.y -= int(self.samus.vel.y)
 
+            # Checking going main menu
+            if self.main_menu:
+                self.main_menu = False
+                try:
+                    pg.mouse.set_visible(True)
+                    self.director.change_scene(self.director.scene_dict['scene_main_menu'])
+                except Exception:
+                    print 'Imposible cambiar de escena'
 
-        # Checking going main menu
-        if self.main_menu:
-            self.main_menu = False
-            try:
-                pg.mouse.set_visible(True)
-                self.director.change_scene(self.director.scene_dict['scene_main_menu'])
-            except Exception:
-                print 'Imposible cambiar de escena'
-
-        # Checking samus if out of lifes to end
-        if self.samus.tanks < 0:
-            self.main_menu = True
+            # Checking samus if out of lifes to end
+            if self.samus.tanks < 0:
+                self.main_menu = True
 # ----------------------------------------------------------------------------------------------------------------------
 
 
@@ -168,6 +168,10 @@ class SceneGame(Scene):
         # - Sprites
         self.sprites.draw(screen)
         self.draw_UI(screen)
+
+        # - Pause
+        if self.director.pause:
+            load_text(screen, "Pause", SCREEN_WIDTH/2, SCREEN_HEIGHT/2, size=25, color=RED)
 
     def draw_UI(self, screen):
         load_text(screen, "move left: A", 30, 30, size=15)

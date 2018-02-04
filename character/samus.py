@@ -5,6 +5,7 @@
 # Modules
 # ---------------------------------------------------------------------
 import pygame as pg
+from pygame.locals import *
 vec = pg.math.Vector2
 from handler.graphics import *
 from config import *
@@ -85,6 +86,7 @@ class Samus(Character):
         self.acc = vec(0.01, 0)
         self.jumping = False
         self.moving = False
+        self.vertical_shot = False
         self.shots = pg.sprite.Group()
         # Propiedades
         self.tanks = 1
@@ -157,12 +159,7 @@ class Samus(Character):
 
 
     def shot(self):
-        if self.direction == 'right' or self.direction == 'stand_right':
-            shot = Shot(self.rect.centerx+self.gun_offset.x, self.rect.centery+self.gun_offset.y, self.direction, self.ammo_type, self.scene)
-        elif self.direction == 'left' or self.direction == 'stand_left':
-            shot = Shot(self.rect.centerx-self.gun_offset.x, self.rect.centery+self.gun_offset.y, self.direction, self.ammo_type, self.scene)
-        else:
-            shot = None
+        shot = Shot(self.rect.centerx, self.rect.centery+self.gun_offset.y, self.direction, self.vertical_shot, self.ammo_type, self.scene)
         self.shots.add(shot)
         self.scene.sprites.add(shot)
 
@@ -195,22 +192,27 @@ class Samus(Character):
 
         # -- Check moving
         keys = pg.key.get_pressed()
-        if keys[pg.K_d]:
-            if pg.key.get_mods() & pg.KMOD_SHIFT:
+        if keys[K_d]:
+            if pg.key.get_mods() & KMOD_SHIFT:
                 self.acc.x = SAMUS_ACC + 1.5
                 self.anim_move_delay_1 = 30
             else:
                 self.acc.x = SAMUS_ACC
                 self.anim_move_delay_1 = 60
             self.direction = 'right'
-        if keys[pg.K_a]:
-            if pg.key.get_mods() & pg.KMOD_SHIFT:
+        if keys[K_a]:
+            if pg.key.get_mods() & KMOD_SHIFT:
                 self.acc.x = -SAMUS_ACC - 1.5
                 self.anim_move_delay_1 = 30
             else:
                 self.acc.x = -SAMUS_ACC
                 self.anim_move_delay_1 = 60
             self.direction = 'left'
+
+        if keys[K_w]:
+            self.vertical_shot = True
+        else:
+            self.vertical_shot = False
 
         # - Apply friction
         self.acc.x += self.vel.x * SAMUS_FRIC
