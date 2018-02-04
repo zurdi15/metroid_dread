@@ -30,7 +30,7 @@ class SceneGame(Scene):
         self.mobs = pg.sprite.Group()
         self.generate_samus()
         self.generate_structures()
-        #self.generate_mobs()
+        self.generate_mobs()
 
 
 
@@ -121,10 +121,10 @@ class SceneGame(Scene):
         #self.samus.pos.y -= self.samus.vel.y
         for struc in self.structures:
             struc.pos.x -= self.samus.vel.x
-         #   struc.pos.y -= self.samus.vel.y
+            #struc.pos.y -= self.samus.vel.y
         for mob in self.mobs:
             mob.rect.x -= int(self.samus.vel.x)
-            mob.rect.y -= int(self.samus.vel.y)
+            #mob.rect.y -= int(self.samus.vel.y)
 
 
         # Checking going main menu
@@ -194,7 +194,7 @@ class SceneGame(Scene):
         self.structures.add(self.platform_1)
 
     def generate_mobs(self):
-        for i in range(4):
+        for i in range(9):
             m = Mob()
             self.sprites.add(m)
             self.mobs.add(m)
