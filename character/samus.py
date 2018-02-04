@@ -89,8 +89,8 @@ class Samus(Character):
         self.vertical_shot = False
         self.shots = pg.sprite.Group()
         # Propiedades
-        self.tanks = 1
-        self.tank_hp = 25
+        self.tanks = 2
+        self.tank_hp = 50
         self.invulnerable = False
         self.invulnerable_time_0 = self.updated
         self.invulnerable_time_1 = 2000 # 2 seconds
@@ -220,5 +220,6 @@ class Samus(Character):
         # - Apply equations of motion
         self.vel += self.acc
         self.pos += self.vel + 0.5 * self.acc
+        self.pos.y = SCREEN_HEIGHT/5*3
 
-        self.rect.midbottom = self.pos
+        self.rect.y = self.pos.y

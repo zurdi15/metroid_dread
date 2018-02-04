@@ -14,7 +14,7 @@ def main():
     pg.init()
     #pg.event.set_grab(True)
     director = Director()
-    scene = SceneMainMenu(director)
+    scene = SceneGame(director)
     director.change_scene(scene)
     director.loop()
 

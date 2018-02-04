@@ -19,10 +19,12 @@ class SceneGame(Scene):
         """Escena del juego"""
         Scene.__init__(self, director)
         pg.mouse.set_visible(False)
-        #self.set_music()
+        self.set_music()
         self.name = 'scene_game'
         self.main_menu = False
         # Game elements
+        self.bg = load_image(BG_GAME_SCENE, False)
+        self.bg_rect = self.bg.get_rect()
         self.sprites = pg.sprite.Group()
         self.structures = pg.sprite.Group()
         self.mobs = pg.sprite.Group()
@@ -91,7 +93,7 @@ class SceneGame(Scene):
             if self.samus.vel.y > 0:
                 hits = pg.sprite.spritecollide(self.samus, self.structures, False)
                 if hits:
-                    self.samus.pos.y = hits[0].rect.top
+                    self.samus.rect.bottom = hits[0].rect.top
                     self.samus.vel.y = 0
 
             # -- Shots
@@ -120,13 +122,12 @@ class SceneGame(Scene):
 
             # - Moving camera
             self.samus.pos.x -= self.samus.vel.x
-            #self.samus.pos.y -= self.samus.vel.y
             for struc in self.structures:
                 struc.pos.x -= self.samus.vel.x
-                #struc.pos.y -= self.samus.vel.y
+                struc.pos.y -= self.samus.vel.y
             for mob in self.mobs:
-                mob.rect.x -= int(self.samus.vel.x)
-                #mob.rect.y -= int(self.samus.vel.y)
+                mob.pos.x -= self.samus.vel.x
+                mob.pos.y -= self.samus.vel.y
 
             # Checking going main menu
             if self.main_menu:
@@ -146,7 +147,7 @@ class SceneGame(Scene):
 # Drawing
 # ----------------------------------------------------------------------------------------------------------------------
     def on_draw(self, screen):
-        screen.fill(BGCOLOR)
+        screen.blit(self.bg, self.bg_rect)
 
         if DEBUG:
         # ------------- DEBUG SECTION -------------
@@ -174,15 +175,15 @@ class SceneGame(Scene):
             load_text(screen, "Pause", SCREEN_WIDTH/2, SCREEN_HEIGHT/2, size=25, color=RED)
 
     def draw_UI(self, screen):
-        load_text(screen, "move left: A", 30, 30, size=15)
-        load_text(screen, "move right: D", 30, 60, size=15)
-        load_text(screen, "jump: space", 30, 90, size=15)
-        load_text(screen, "shot: mouse_left", 30, 120, size=15)
-        load_text(screen, "change ammo: mouse_right", 30, 150, size=15)
-        load_text(screen, "run: left shift", 30, 180, size=15)
-        load_text(screen, "ammo: " + self.samus.ammo_type, self.samus.rect.right, self.samus.rect.y-20, size=15)
-        self.draw_tanks(screen, self.samus.rect.right, self.samus.rect.y, self.samus.tanks)
-        self.draw_tank_bar(screen, self.samus.rect.right, self.samus.rect.y+20, self.samus.tank_hp)
+        load_text(screen, "move left: A", 10, 10, size=15)
+        load_text(screen, "move right: D", 10, 30, size=15)
+        load_text(screen, "jump: space", 10, 50, size=15)
+        load_text(screen, "shot: mouse_left", 10, 70, size=15)
+        load_text(screen, "change ammo: mouse_right", 10, 90, size=15)
+        load_text(screen, "run: left shift", 10, 110, size=15)
+        load_text(screen, "ammo: " + self.samus.ammo_type, self.samus.rect.left-50, self.samus.rect.y-23aaaaaaaaa, size=15)
+        self.draw_tanks(screen, self.samus.rect.right-10, self.samus.rect.y-40, self.samus.tanks)
+        self.draw_tank_bar(screen, self.samus.rect.right-10, self.samus.rect.y-20, self.samus.tank_hp)
 
 
     @staticmethod
@@ -212,12 +213,18 @@ class SceneGame(Scene):
         self.sprites.add(self.samus)
 
     def generate_structures(self):
-        self.ground = Structure(-600, SCREEN_HEIGHT - 40, SCREEN_WIDTH + 5000, 40, self)
+        self.ground = Structure(SCREEN_WIDTH/2, SCREEN_HEIGHT - 40, SCREEN_WIDTH+1300, 40, self)
         self.sprites.add(self.ground)
         self.structures.add(self.ground)
         self.platform_1 = Structure(SCREEN_WIDTH/2, SCREEN_HEIGHT/2, 100, 15, self)
         self.sprites.add(self.platform_1)
         self.structures.add(self.platform_1)
+        self.platform_2 = Structure(0, SCREEN_HEIGHT / 2, 100, 15, self)
+        self.sprites.add(self.platform_2)
+        self.structures.add(self.platform_2)
+        self.platform_3 = Structure(SCREEN_WIDTH-100, SCREEN_HEIGHT / 2, 100, 15, self)
+        self.sprites.add(self.platform_3)
+        self.structures.add(self.platform_3)
 
     def generate_mobs(self):
         for i in range(9):

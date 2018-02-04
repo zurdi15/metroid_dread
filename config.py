@@ -27,9 +27,9 @@ FPS = 60
 GRAVITY = 0.98
 
 # Samus
-SAMUS_ACC = 0.9
+SAMUS_ACC = 2.8
 SAMUS_JUMP = 22
-SAMUS_FRIC = -0.2
+SAMUS_FRIC = -0.5
 
 # Colors
 BLACK = (0, 0, 0)
@@ -53,10 +53,17 @@ ELEMENT_MAIN_MENU_SELECTED = MENU + '/main_menu_slot_1.png'
 
 # Characters
 CHARACTERS = 'resources/images/character'
+# Samus
 ZERO_SUIT_STAND_SHEET = CHARACTERS + '/zero_suit_stand_sheet.png'
 ZERO_SUIT_MOVE_RIGHT_SHEET = CHARACTERS + '/zero_suit_move_right_sheet.png'
 ZERO_SUIT_MOVE_LEFT_SHEET = CHARACTERS + '/zero_suit_move_left_sheet.png'
 ZERO_SUIT_JUMP_SHEET = CHARACTERS + '/zero_suit_jump_sheet.png'
+# Mob
+MOB = CHARACTERS+'/mob.png'
+
+# Backgrounds
+BG = 'resources/images/backgrounds'
+BG_GAME_SCENE = BG+'/bg_stars.png'
 
 # Ammo
 AMMO = 'resources/images/ammo'
