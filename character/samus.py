@@ -87,10 +87,11 @@ class Samus(Character):
         self.moving = False
         self.shots = pg.sprite.Group()
         # Propiedades
-        self.lifes = 3
+        self.tanks = 1
+        self.tank_hp = 25
         self.invulnerable = False
         self.invulnerable_time_0 = self.updated
-        self.invulnerable_time_1 = 4000 # 4 seconds
+        self.invulnerable_time_1 = 2000 # 2 seconds
         self.ammo_type = 'normal'
 
 

@@ -4,9 +4,7 @@
 
 # Modules
 # ---------------------------------------------------------------------
-import pygame as pg
 from pygame.locals import *
-from config import *
 from handler.graphics import *
 from scene import Scene
 from character import Samus
@@ -113,7 +111,10 @@ class SceneGame(Scene):
         if not self.samus.invulnerable:
             hits = pg.sprite.spritecollide(self.samus, self.mobs, False, pg.sprite.collide_circle)
             for hit in hits:
-                self.samus.lifes -= 1
+                self.samus.tank_hp -= hit.damage
+                if self.samus.tank_hp <= 0:
+                    self.samus.tank_hp = 100
+                    self.samus.tanks -= 1
                 self.samus.invulnerable = True
 
         # - Moving camera
@@ -131,13 +132,14 @@ class SceneGame(Scene):
         if self.main_menu:
             self.main_menu = False
             try:
+                pg.mouse.set_visible(True)
                 self.director.change_scene(self.director.scene_dict['scene_main_menu'])
             except Exception:
                 print 'Imposible cambiar de escena'
 
         # Checking samus if out of lifes to end
-        if self.samus.lifes < 1:
-            self.director.quit()
+        if self.samus.tanks < 0:
+            self.main_menu = True
 # ----------------------------------------------------------------------------------------------------------------------
 
 
@@ -175,7 +177,27 @@ class SceneGame(Scene):
         load_text(screen, "change ammo: mouse_right", 30, 150, size=15)
         load_text(screen, "run: left shift", 30, 180, size=15)
         load_text(screen, "ammo: " + self.samus.ammo_type, self.samus.rect.right, self.samus.rect.y-20, size=15)
-        load_text(screen, "lifes: " + str(self.samus.lifes), self.samus.rect.right, self.samus.rect.y, size=15)
+        self.draw_tanks(screen, self.samus.rect.right, self.samus.rect.y, self.samus.tanks)
+        self.draw_tank_bar(screen, self.samus.rect.right, self.samus.rect.y+20, self.samus.tank_hp)
+
+
+    @staticmethod
+    def draw_tanks(screen, x, y, tanks):
+        TANK_WIDTH = 5
+        TANK_HEIGHT = 15
+        for i in range(tanks):
+            tank = pg.Rect(x+TANK_WIDTH*2*i, y, TANK_WIDTH, TANK_HEIGHT)
+            pg.draw.rect(screen, YELLOW, tank)
+
+
+    @staticmethod
+    def draw_tank_bar(screen, x, y, tank_hp):
+        BAR_WIDTH = 100
+        BAR_HEIGHT = 10
+        outline_rect = pg.Rect(x, y, BAR_WIDTH, BAR_HEIGHT)
+        fill_rect = pg.Rect(x, y, tank_hp, BAR_HEIGHT)
+        pg.draw.rect(screen, GREEN, fill_rect)
+        pg.draw.rect(screen, WHITE, outline_rect, 2)
 # ----------------------------------------------------------------------------------------------------------------------
 
 
@@ -198,7 +220,6 @@ class SceneGame(Scene):
             m = Mob()
             self.sprites.add(m)
             self.mobs.add(m)
-
 # ----------------------------------------------------------------------------------------------------------------------
 
 

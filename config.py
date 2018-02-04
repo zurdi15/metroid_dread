@@ -29,14 +29,15 @@ GRAVITY = 0.98
 # Samus
 SAMUS_ACC = 0.9
 SAMUS_JUMP = 22
-SAMUS_FRIC = -0.12
+SAMUS_FRIC = -0.2
 
 # Colors
 BLACK = (0, 0, 0)
 WHITE = (255, 255, 255)
 RED = (255, 0, 0)
-BLUE = (0, 0, 255)
 GREEN = (0, 255, 0)
+BLUE = (0, 0, 255)
+YELLOW = (0, 255, 255)
 BGCOLOR = (40, 40, 40)
 
 # Directories

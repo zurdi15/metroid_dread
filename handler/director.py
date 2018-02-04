@@ -34,7 +34,7 @@ class Director:
         """Pone en funcionamiento el juego."""
         while self.running:
             self.time = self.clock.tick(FPS)
-
+            print len(self.scene_dict)
             # Eventos
             for event in pg.event.get(QUIT):
                 self.quit()

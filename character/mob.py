@@ -20,8 +20,9 @@ class Mob(Character):
         self.rect.x = random.randrange(-200, SCREEN_WIDTH+200)
         self.rect.y = random.randrange(-100, -40)
         self.radius = 20
-        self.speedy = random.randrange(1, 4)
         self.speedx = 0
+        self.speedy = random.randrange(1, 4)
+        self.damage = 25
 
 
     def update(self):
