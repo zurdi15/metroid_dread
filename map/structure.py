@@ -5,6 +5,7 @@
 # Modules
 # ---------------------------------------------------------------------
 import pygame as pg
+vec = pg.math.Vector2
 from config import *
 # ---------------------------------------------------------------------
 
@@ -16,5 +17,12 @@ class Structure(pg.sprite.Sprite):
         self.image = pg.Surface((w, h))
         self.image.fill(WHITE)
         self.rect = self.image.get_rect()
-        self.rect.x = posx
-        self.rect.y = posy
+        self.pos = vec(posx, posy)
+        self.rect.x = self.pos.x
+        self.rect.y = self.pos.y
+
+
+    def update(self):
+
+        self.rect.x = self.pos.x
+        self.rect.y = self.pos.y

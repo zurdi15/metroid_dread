@@ -25,6 +25,8 @@ class Samus(Character):
         self.height_stand = 108
         self.width_move = 105
         self.height_move = 118
+        self.width_jump = 81
+        self.height_jump = 87
         # Definimos el tamaño de cada clip del sheet
         self.sheet.set_clip(pg.Rect(self.width_stand, 0, self.width_stand, self.height_stand))
         # Recogemos la imagen inicial del sheet
@@ -34,7 +36,7 @@ class Samus(Character):
         self.rect.centerx = posx
         self.rect.centery = posy
         self.radius = 35
-        # Establecemos el primer frame de la animacion a 0 (hay 4)
+        # Establecemos el primer frame de la animacion
         self.frame = 0
         # Definimos cada estado con sus coordenadas
         self.stand_states =  {0: (self.width_stand, 0, self.width_stand, self.height_stand),
@@ -59,10 +61,22 @@ class Samus(Character):
                                  7: (self.width_move * 2, 0, self.width_move, self.height_move),
                                  8: (self.width_move, 0, self.width_move, self.height_move),
                                  9: (0, 0, self.width_move, self.height_move), }
+        self.right_jump_states = {0: (0, self.height_jump, self.width_jump, self.height_jump),
+                                  1: (self.width_jump, self.height_jump, self.width_jump, self.height_jump),
+                                  2: (self.width_jump*2, self.height_jump, self.width_jump, self.height_jump),
+                                  3: (self.width_jump*3, self.height_jump, self.width_jump, self.height_jump),
+                                  4: (self.width_jump*4, self.height_jump, self.width_jump, self.height_jump),}
+        self.left_jump_states = {0: (0, 0, self.width_jump, self.height_jump),
+                                  1: (self.width_jump, 0, self.width_jump, self.height_jump),
+                                  2: (self.width_jump * 2, 0, self.width_jump, self.height_jump),
+                                  3: (self.width_jump * 3, 0, self.width_jump, self.height_jump),
+                                  4: (self.width_jump * 4, 0, self.width_jump, self.height_jump), }
         self.updated = pg.time.get_ticks()
         # Definimos el delay de la animacion
-        self.anim_delay_0 = self.updated
-        self.anim_delay_1 = FPS
+        self.anim_move_delay_0 = self.updated
+        self.anim_move_delay_1 = 60
+        self.anim_jump_delay_0 = self.updated
+        self.anim_jump_delay_1 = 65
         # Variables de movimiento
         self.direction = 'stand_right'
         self.pos = vec(posx, posy)
@@ -97,17 +111,41 @@ class Samus(Character):
 
     def animation(self):
         if self.direction == 'right':
-            self.sheet = load_image(ZERO_SUIT_MOVE_RIGHT_SHEET, True)
-            self.clip(self.right_move_states)
+            if not self.jumping:
+                self.sheet = load_image(ZERO_SUIT_MOVE_RIGHT_SHEET, True)
+                self.clip(self.right_move_states)
+            else:
+                if self.anim_jump_delay_0 + self.anim_jump_delay_1 <= pg.time.get_ticks():
+                    self.sheet = load_image(ZERO_SUIT_JUMP_SHEET, True)
+                    self.clip(self.right_jump_states)
+                    self.anim_jump_delay_0 = pg.time.get_ticks()
         elif self.direction == 'left':
-            self.sheet = load_image(ZERO_SUIT_MOVE_LEFT_SHEET, True)
-            self.clip(self.left_move_states)
+            if not self.jumping:
+                self.sheet = load_image(ZERO_SUIT_MOVE_LEFT_SHEET, True)
+                self.clip(self.left_move_states)
+            else:
+                if self.anim_jump_delay_0 + self.anim_jump_delay_1 <= pg.time.get_ticks():
+                    self.sheet = load_image(ZERO_SUIT_JUMP_SHEET, True)
+                    self.clip(self.left_jump_states)
+                    self.anim_jump_delay_0 = pg.time.get_ticks()
         elif self.direction == 'stand_right':
-            self.sheet = load_image(ZERO_SUIT_STAND_SHEET, True)
-            self.clip(self.stand_states[0])
+            if not self.jumping:
+                self.sheet = load_image(ZERO_SUIT_STAND_SHEET, True)
+                self.clip(self.stand_states[0])
+            else:
+                if self.anim_jump_delay_0 + self.anim_jump_delay_1 <= pg.time.get_ticks():
+                    self.sheet = load_image(ZERO_SUIT_JUMP_SHEET, True)
+                    self.clip(self.right_jump_states)
+                    self.anim_jump_delay_0 = pg.time.get_ticks()
         elif self.direction == 'stand_left':
-            self.sheet = load_image(ZERO_SUIT_STAND_SHEET, True)
-            self.clip(self.stand_states[1])
+            if not self.jumping:
+                self.sheet = load_image(ZERO_SUIT_STAND_SHEET, True)
+                self.clip(self.stand_states[1])
+            else:
+                if self.anim_jump_delay_0 + self.anim_jump_delay_1 <= pg.time.get_ticks():
+                    self.sheet = load_image(ZERO_SUIT_JUMP_SHEET, True)
+                    self.clip(self.left_jump_states)
+                    self.anim_jump_delay_0 = pg.time.get_ticks()
 
         self.image = self.sheet.subsurface(self.sheet.get_clip())
 
@@ -119,9 +157,9 @@ class Samus(Character):
 
     def shot(self):
         if self.direction == 'right' or self.direction == 'stand_right':
-            shot = Shot(self.rect.centerx+self.gun_offset.x, self.rect.centery+self.gun_offset.y, self.direction, self.scene)
+            shot = Shot(self.rect.centerx+self.gun_offset.x, self.rect.centery+self.gun_offset.y, self.direction, self.ammo_type, self.scene)
         elif self.direction == 'left' or self.direction == 'stand_left':
-            shot = Shot(self.rect.centerx-self.gun_offset.x, self.rect.centery+self.gun_offset.y, self.direction, self.scene)
+            shot = Shot(self.rect.centerx-self.gun_offset.x, self.rect.centery+self.gun_offset.y, self.direction, self.ammo_type, self.scene)
         else:
             shot = None
         self.shots.add(shot)
@@ -139,15 +177,15 @@ class Samus(Character):
         # - Calculate gravity
         self.acc = vec(0, GRAVITY)
 
-        if self.vel.y != 0.0:
+        if self.vel.y != 0:
             self.jumping = True
         else:
             self.jumping = False
 
         # - Calculate animation time
-        if self.anim_delay_0 + self.anim_delay_1 <= pg.time.get_ticks():
+        if self.anim_move_delay_0 + self.anim_move_delay_1 <= pg.time.get_ticks():
             self.animation()
-            self.anim_delay_0 = pg.time.get_ticks()
+            self.anim_move_delay_0 = pg.time.get_ticks()
 
         # - Calculate invulnerable time
         if self.invulnerable_time_0 + self.invulnerable_time_1 <= pg.time.get_ticks():
@@ -157,10 +195,20 @@ class Samus(Character):
         # -- Check moving
         keys = pg.key.get_pressed()
         if keys[pg.K_d]:
-            self.acc.x = SAMUS_ACC
+            if pg.key.get_mods() & pg.KMOD_SHIFT:
+                self.acc.x = SAMUS_ACC + 1.5
+                self.anim_move_delay_1 = 30
+            else:
+                self.acc.x = SAMUS_ACC
+                self.anim_move_delay_1 = 60
             self.direction = 'right'
         if keys[pg.K_a]:
-            self.acc.x = -SAMUS_ACC
+            if pg.key.get_mods() & pg.KMOD_SHIFT:
+                self.acc.x = -SAMUS_ACC - 1.5
+                self.anim_move_delay_1 = 30
+            else:
+                self.acc.x = -SAMUS_ACC
+                self.anim_move_delay_1 = 60
             self.direction = 'left'
 
         # - Apply friction

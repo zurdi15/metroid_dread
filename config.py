@@ -26,10 +26,6 @@ FPS = 60
 # Enviroment
 GRAVITY = 0.98
 
-
-#81x87
-
-
 # Samus
 SAMUS_ACC = 0.9
 SAMUS_JUMP = 22
@@ -41,6 +37,7 @@ WHITE = (255, 255, 255)
 RED = (255, 0, 0)
 BLUE = (0, 0, 255)
 GREEN = (0, 255, 0)
+BGCOLOR = (40, 40, 40)
 
 # Directories
 # Start game
@@ -58,10 +55,12 @@ CHARACTERS = 'resources/images/character'
 ZERO_SUIT_STAND_SHEET = CHARACTERS + '/zero_suit_stand_sheet.png'
 ZERO_SUIT_MOVE_RIGHT_SHEET = CHARACTERS + '/zero_suit_move_right_sheet.png'
 ZERO_SUIT_MOVE_LEFT_SHEET = CHARACTERS + '/zero_suit_move_left_sheet.png'
+ZERO_SUIT_JUMP_SHEET = CHARACTERS + '/zero_suit_jump_sheet.png'
 
 # Ammo
 AMMO = 'resources/images/ammo'
 SHOT = AMMO + '/shot.png'
+SHOT_PLASMA = AMMO + '/shot_plasma.png'
 
 # Audio
 AUDIO = 'resources/audio'
@@ -79,6 +78,6 @@ FONTS = 'resources/fonts'
 DROID_SANS = FONTS + '/droid_sans.ttf'
 
 # TEST
-DEBUG = True
+DEBUG = False
 TEST_BG = 'resources/test/test_bg.png'
 TEST_SPRITES_KATE = 'resources/test/test_sprites_kate.png'

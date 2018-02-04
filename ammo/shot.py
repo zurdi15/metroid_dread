@@ -12,10 +12,13 @@ from ammo import Ammo
 # ---------------------------------------------------------------------
 
 class Shot(Ammo):
-    def __init__(self, posx, posy, direction, scene):
+    def __init__(self, posx, posy, direction, ammo_type, scene):
         Ammo.__init__(self)
         self.scene = scene
-        self.image = graphics.load_image(SHOT, True)
+        if ammo_type == 'normal':
+            self.image = graphics.load_image(SHOT, True)
+        elif ammo_type == 'plasma':
+            self.image = graphics.load_image(SHOT_PLASMA, True)
         self.rect = self.image.get_rect()
         self.rect.center = (posx, posy)
         self.radius = self.rect.width/2

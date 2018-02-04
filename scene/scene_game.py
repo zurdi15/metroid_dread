@@ -30,7 +30,7 @@ class SceneGame(Scene):
         self.mobs = pg.sprite.Group()
         self.generate_samus()
         self.generate_structures()
-        self.generate_mobs()
+        #self.generate_mobs()
 
 
 
@@ -40,10 +40,13 @@ class SceneGame(Scene):
         for event in pg.event.get():
 
             # - Check mouse
-            # -- Check chooting
+            # -- Check shooting
             if event.type == MOUSEBUTTONDOWN:
                 if event.button == 1:
                     self.samus.shot()
+                # -- Ckeck ammo change
+                elif event.button == 3:
+                    self.samus.ammo_change()
 
             # - Check keyboard
             elif event.type == KEYDOWN:
@@ -56,9 +59,6 @@ class SceneGame(Scene):
                 # -- Check jumping
                 elif event.key == K_SPACE:
                     self.samus.jump()
-                # -- Ckeck ammo change
-                elif event.key == K_e:
-                    self.samus.ammo_change()
                 # -- Check enable/disable music
                 elif event.key == K_m:
                     if self.director.music_flag:
@@ -118,11 +118,10 @@ class SceneGame(Scene):
 
         # - Moving camera
         self.samus.pos.x -= self.samus.vel.x
-        self.samus.pos.y -= self.samus.vel.y
+        #self.samus.pos.y -= self.samus.vel.y
         for struc in self.structures:
-            struc.rect.x -= int(self.samus.vel.x)
-
-            struc.rect.y -= int(self.samus.vel.y)
+            struc.pos.x -= self.samus.vel.x
+         #   struc.pos.y -= self.samus.vel.y
         for mob in self.mobs:
             mob.rect.x -= int(self.samus.vel.x)
             mob.rect.y -= int(self.samus.vel.y)
@@ -145,7 +144,7 @@ class SceneGame(Scene):
 # Drawing
 # ----------------------------------------------------------------------------------------------------------------------
     def on_draw(self, screen):
-        screen.fill(BLACK)
+        screen.fill(BGCOLOR)
 
         if DEBUG:
         # ------------- DEBUG SECTION -------------
@@ -169,10 +168,12 @@ class SceneGame(Scene):
         self.draw_UI(screen)
 
     def draw_UI(self, screen):
-        load_text(screen, "left: A", 50, 30, size=15)
-        load_text(screen, "right: D", 50, 60, size=15)
-        load_text(screen, "jump: space", 50, 90, size=15)
-        load_text(screen, "shot: mouse_1", 50, 120, size=15)
+        load_text(screen, "move left: A", 30, 30, size=15)
+        load_text(screen, "move right: D", 30, 60, size=15)
+        load_text(screen, "jump: space", 30, 90, size=15)
+        load_text(screen, "shot: mouse_left", 30, 120, size=15)
+        load_text(screen, "change ammo: mouse_right", 30, 150, size=15)
+        load_text(screen, "run: left shift", 30, 180, size=15)
         load_text(screen, "ammo: " + self.samus.ammo_type, self.samus.rect.right, self.samus.rect.y-20, size=15)
         load_text(screen, "lifes: " + str(self.samus.lifes), self.samus.rect.right, self.samus.rect.y, size=15)
 # ----------------------------------------------------------------------------------------------------------------------
@@ -185,10 +186,10 @@ class SceneGame(Scene):
         self.sprites.add(self.samus)
 
     def generate_structures(self):
-        self.ground = Structure(SCREEN_WIDTH/2, SCREEN_HEIGHT/2, 100, 15, self)
+        self.ground = Structure(-600, SCREEN_HEIGHT - 40, SCREEN_WIDTH + 5000, 40, self)
         self.sprites.add(self.ground)
         self.structures.add(self.ground)
-        self.platform_1 = Structure(-200, SCREEN_HEIGHT - 40, SCREEN_WIDTH + 200, 40, self)
+        self.platform_1 = Structure(SCREEN_WIDTH/2, SCREEN_HEIGHT/2, 100, 15, self)
         self.sprites.add(self.platform_1)
         self.structures.add(self.platform_1)
 
