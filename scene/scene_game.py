@@ -181,6 +181,7 @@ class SceneGame(Scene):
         load_text(screen, "shot: mouse_left", 10, 70, size=15)
         load_text(screen, "change ammo: mouse_right", 10, 90, size=15)
         load_text(screen, "run: left shift", 10, 110, size=15)
+        load_text(screen, "pause: ESC", 10, 130, size=15)
         load_text(screen, "ammo: " + self.samus.ammo_type, self.samus.rect.left-50, self.samus.rect.y-23, size=15)
         self.draw_tanks(screen, self.samus.rect.right-10, self.samus.rect.y-40, self.samus.tanks)
         self.draw_tank_bar(screen, self.samus.rect.right-10, self.samus.rect.y-20, self.samus.tank_hp)
